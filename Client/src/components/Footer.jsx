@@ -9,9 +9,9 @@ import {
 import logo from "../assets/logo.jpg";
 export default function Footer() {
   return (
-    <footer className=" py-8 px-8 sm:px-16 mt-auto">
+    <footer className=" py-8 px-8 sm:px-16 mt-auto border-t-2">
       {/* LOGO */}
-      <div className="w-full md:w-auto mb-20 hidden md:block ">
+      <div className="w-full md:w-auto mb-16 hidden md:block ">
         <img src={logo} alt="" />
       </div>
 

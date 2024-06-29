@@ -10,7 +10,6 @@ export default function Hero() {
       <img
         src={hero}
         alt="carousel"
-        
         className=""
         role="presentation"
       />

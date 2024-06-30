@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
+import RegisterSec from "../components/RegisterSec";
+import LoginSec from "../components/LoginSec";
 
 function LoginPage() {
+
   return (
     <div className="flex flex-col  container h-[60vh] justify-center items-center gap-4 w-full p-2">
       <h1 className="text-2xl font-bold ">Login/Register to your account</h1>
@@ -8,22 +11,38 @@ function LoginPage() {
         Lorem ipsum dolor sit amet consectetur. Sapien ut libero sed lacinia
         egestas placerat ut sagittionec.
       </h3>
-     
-        <form action="" className="logincontainer flex flex-col gap-2 w-full items-center ">
-          <input
-            type="text"
-            placeholder="Email ID"
-            className="border-2 p-4 w-full  input-bordered  max-w-lg rounded-sm"
-          />
-          <input
-            type="text"
-            placeholder="Password"
-            className="border-2 p-4 w-full  input-bordered  md:max-w-lg rounded-sm"
-          />
-          <button className=" btn  bg-sky-400 rounded-none px-16 mt-3" type="submit">
-            Login
-          </button>
-        </form>
+      <div className="w-2/4">
+        <div role="tablist" className="tabs tabs-bordered w-full">
+        <input
+          type="radio" 
+          name="my_tabs_1"
+          role="tab"
+          className="tab"
+          aria-label="LOGIN"
+          defaultChecked
+        />
+        {/* LOGIN SECTION */}
+        <div role="tabpanel" className="tab-content p-10 w-full ">
+
+        <LoginSec/>
+
+        </div>
+
+        <input
+          type="radio"
+          name="my_tabs_1"
+          role="tab"
+          className="tab"
+          aria-label="REGISTER"
+          
+        />
+        <div role="tabpanel" className="tab-content p-10">
+          {/* REGISTER SECTION */}
+          <RegisterSec/>
+        </div>
+      </div>
+      </div>
+      
       
     </div>
   );

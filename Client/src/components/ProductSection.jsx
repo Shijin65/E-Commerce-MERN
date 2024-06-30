@@ -62,8 +62,8 @@ const ProductSection = () => {
             <ProductCard bigOne />
           </div>
           <div className="grid grid-cols-2  col-span-4 md:grid-cols-3  lg:col-span-2 relative">
-            {products.map((item) => (
-              <ProductCard />
+            {products.map((item,index) => (
+              <ProductCard key={index} />
             ))}
           </div>
         </div>

@@ -11,7 +11,7 @@ function LoginPage() {
         Lorem ipsum dolor sit amet consectetur. Sapien ut libero sed lacinia
         egestas placerat ut sagittionec.
       </h3>
-      <div className="w-2/4">
+      <div className="lg:w-2/4 w-full">
         <div role="tablist" className="tabs tabs-bordered w-full">
         <input
           type="radio" 

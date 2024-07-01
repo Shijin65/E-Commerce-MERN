@@ -1,9 +1,14 @@
 import React from "react";
 import productImage from "../assets/productImage.png";
 import { FaPlus } from "react-icons/fa6";
-const ProductCard = ({ bigOne }) => {
+import { Navigate, useNavigate } from "react-router-dom";
+const ProductCard = ({ bigOne,item }) => {
+  const navigate = useNavigate()
   return (
     <div
+      onClick={()=>navigate({
+        pathname: `/productdetails/${item?.id}`,
+      })}
       className={` bg-base-100   border-2  ${
         bigOne ? "h-full w-full p-10" : "md:w- p-1 md:p-4"
       }`}
@@ -36,18 +41,30 @@ const ProductCard = ({ bigOne }) => {
           )}
         </div>
 
-        <h2 className={`card-title  font-bold ${bigOne?"text-center":"text-xs"}`}>
+        <h2
+          className={`card-title  font-bold ${
+            bigOne ? "text-center" : "text-xs"
+          }`}
+        >
           iPhone 14 Pro max 256GB - Deep Purple
         </h2>
 
-        <div className={`flex  text-sm mt-2  text-gray-500  ${bigOne?"justify-center gap-5":"justify-between text-xs pe-16"}`}>
+        <div
+          className={`flex  text-sm mt-2  text-gray-500  ${
+            bigOne ? "justify-center gap-5" : "justify-between text-xs pe-16"
+          }`}
+        >
           <h3 className="text-[12px]">INR</h3>
           <h2 className="font-bold text-black">4,699.00</h2>
           <h2 className="line">4,699.00</h2>
         </div>
-          {bigOne? <button className="btn bg-sky-600 text-white rounded-none mt-10 "> 
+        {bigOne ? (
+          <button className="btn bg-sky-600 text-white rounded-none mt-10 ">
             ADD TO CART
-          </button>:""}
+          </button>
+        ) : (
+          ""
+        )}
       </div>
     </div>
   );

@@ -8,10 +8,10 @@ import { Authcontextprovider } from "./context/Authcontext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <Authcontextprovider>
-      <Router>
+    <Router>
+      <Authcontextprovider>
         <AppRoutes />
-      </Router>
-    </Authcontextprovider>
+      </Authcontextprovider>
+    </Router>
   </React.StrictMode>
 );

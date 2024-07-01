@@ -9,6 +9,7 @@ const LoginSec = () => {
   const {LoginUser}=useContext(AuthContext)
   const handleSubmit=(event)=>{
     event.preventDefault()
+    console.log(import.meta.env.VITE_API_URL)
     LoginUser({...userData})
   }
   const handlechange=(event)=>{

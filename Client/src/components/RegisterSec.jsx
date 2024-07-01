@@ -6,6 +6,7 @@ const RegisterSec = () => {
     username: "",
     email: "",
     password: "",
+    role:0
   });
 
   const { RegisterUser } = useContext(AuthContext);

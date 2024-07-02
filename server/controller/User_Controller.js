@@ -5,8 +5,8 @@ const jwt = require("jsonwebtoken");
 
 //CURRENT USER
 const CurrentUser = asyncHanler(async (req, res) => {
-  res.status(200).json(req.name);
-  res.end();
+  res.status(200).json(req.user);
+  // res.end();
 });
 
 // REGISTETR USER

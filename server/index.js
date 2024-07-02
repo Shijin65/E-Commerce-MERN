@@ -17,6 +17,8 @@ connectDB()
 
 // Routes
 Server.use("/api/user",require('./routes/User-router'));
+Server.use("/api/admin",require('./routes/Admin-router'))
+Server.use("/api/product",require('./routes/Product-router'))
 
 Server.listen(PORT, () => {
   console.log(`the server is running in the port :${PORT}`);

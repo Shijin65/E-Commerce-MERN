@@ -4,11 +4,11 @@ const AuthContext = createContext();
 import { useLocation, useNavigate } from "react-router-dom";
 
 export const Authcontextprovider = ({ children }) => {
-  const [user, setuser] = useState(null);
+  const [user, setUser] = useState(null);
   const Navigate = useNavigate();
 
   useEffect(() => {
-    setuser(JSON.parse(localStorage.getItem("user")));
+    setUser(JSON.parse(localStorage.getItem("user")));
     currentUser();
   }, []);
 
@@ -16,6 +16,7 @@ export const Authcontextprovider = ({ children }) => {
   // CURRENT USER ........................................................
 
   const currentUser = async () => {
+    
     try {
       const res = await fetch(`${VITE_API_URL}/api/user/current`, {
         method: "GET",
@@ -28,7 +29,7 @@ export const Authcontextprovider = ({ children }) => {
           location.pathname === "/login" ||
           location.pathname === "/register"
         ) {
-          Navigate("/home", { replace: true });
+          Navigate("/", { replace: true });
         } else {
           Navigate(location.pathname ? location.pathname : "/");
         }
@@ -36,7 +37,7 @@ export const Authcontextprovider = ({ children }) => {
         console.log(userres.error);
         localStorage.clear();
         Navigate("/", { replace: true });
-        setuser(null);
+        setUser(null);
       }
     } catch (error) {
       console.log(error);
@@ -54,7 +55,7 @@ export const Authcontextprovider = ({ children }) => {
     });
     const userres = await res.json();
     if (!userres.error) {
-      setuser(userres.user);
+      setUser(userres.user);
     }
   };
 
@@ -72,13 +73,15 @@ export const Authcontextprovider = ({ children }) => {
       console.log();
       localStorage.setItem("auth", userres.accesstoken);
       localStorage.setItem("user", JSON.stringify(userres.user));
-      setuser(userres.user);
-      Navigate("/home", { replace: true });
+      setUser(userres.user);
+      Navigate("/", { replace: true });
+    }else{
+      console.log(error)
     }
   };
 
   return (
-    <AuthContext.Provider value={{ RegisterUser, LoginUser, user }}>
+    <AuthContext.Provider value={{ RegisterUser, LoginUser, user ,setUser}}>
       {children}
     </AuthContext.Provider>
   );

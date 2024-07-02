@@ -1,11 +1,17 @@
 const asynchandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
+const User = require("../model/User_model");
 
 const isAdmin = asynchandler(async (req, res, next) => {
 
-    const {role}= req.body
-    if(role===1){
-        
+    
+    const user = await User.findById(req.user.id)
+
+    if(user?.role==="1"){
+        next()
+    }else{
+      res.status(401).json(user);
+      throw new Error("requiest rejected due to not having specifice role");
     }
 });
 const validUser = asynchandler(async (req, res, next) => {

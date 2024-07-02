@@ -7,11 +7,11 @@ import AppRoutes from "./AppRoutes";
 import { Authcontextprovider } from "./context/Authcontext";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
-  <React.StrictMode>
+  // <React.StrictMode>
     <Router>
       <Authcontextprovider>
         <AppRoutes />
       </Authcontextprovider>
     </Router>
-  </React.StrictMode>
+  // </React.StrictMode>
 );

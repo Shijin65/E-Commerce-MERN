@@ -9,7 +9,7 @@ const ProductCard = ({ bigOne,item }) => {
       onClick={()=>navigate({
         pathname: `/productdetails/${item?.id}`,
       })}
-      className={` bg-base-100   border-2  ${
+      className={` bg-base-100   border-2 hover:bg-gray-200 ${
         bigOne ? "h-full w-full p-10" : "md:w- p-1 md:p-4"
       }`}
     >

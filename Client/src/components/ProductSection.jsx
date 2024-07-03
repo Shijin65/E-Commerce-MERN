@@ -60,10 +60,10 @@ const ProductSection = () => {
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-3 mt-6 ">
           <div className="row-span-2 col-span-1  hidden lg:block relative">
-            <ProductCard bigOne />
+            <ProductCard product={products[0]} bigOne />
           </div>
           <div className="grid grid-cols-2  col-span-4 md:grid-cols-3  lg:col-span-2 relative">
-            {products.map((item,index) => (
+            {products.slice(1).map((item,index) => (
                <ProductCard key={index} item={item}/>
             ))}
           </div>

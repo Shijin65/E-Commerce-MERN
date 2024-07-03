@@ -4,7 +4,7 @@ import AuthContext from '../../context/Authcontext'
 import { Outlet, useNavigate } from 'react-router-dom'
 import AdminMenu from './AdminMenu'
 
-const AdminDashBoard = ({Children}) => {
+const AdminDashBoard = () => {
     const {user}=useContext(AuthContext)
     const Navigate = useNavigate()
     useEffect(() => {

@@ -1,189 +1,372 @@
 import React, { useState } from "react";
+import { useForm, useFieldArray, Controller } from "react-hook-form";
+const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const AddProduct = () => {
-  const ProductData = {
-    name: "iPhone 12 Pro max",
-    
-    colors: [
-      {
-        name: "black",
-        class: "bg-black checked:bg-black",
-        selectedClass: "ring-gray-400",
-      },
-      {
-        name: "Red",
-        class: "bg-red-500 checked:bg-red-500",
-        selectedClass: "ring-gray-400",
-      },
-      {
-        name: "Green",
-        class: "bg-green-800 checked:bg-green-800",
-        selectedClass: "ring-gray-900",
-      },
-      {
-        name: "Gray",
-        class: "bg-gray-400 checked:bg-gray-400",
-        selectedClass: "ring-gray-900",
-      },
-      {
-        name: "Blue",
-        class: "bg-blue-600 checked:bg-blue-800",
-        selectedClass: "ring-gray-900",
-      },
+  const initialData = {
+    name: "iphone",
+    colors: ["Black", "White", "Blue"],
+    price: {
+      currency: "USD",
+      oldPrice: 799,
+      newPrice: 699,
+    },
+    description: "aaa",
+    storageOptions: [
+      { storage: "64GB", price: "500" },
+      { storage: "128GB", price: "500" },
+      { storage: "256GB", price: "500" },
     ],
-    storage: [
-      { name: "128GB", inStock: false },
-      { name: "256GB", inStock: true },
-      { name: "514GB", inStock: true },
-      { name: "1TB", inStock: true },
+    features: [
+      { feature: "Bluetooth", value: "00" },
+      { feature: "Screen Size", value: "00" },
+      { feature: "Screen Resolution", value: "00" },
+      { feature: "Battery Capacity", value: "00" },
+      { feature: "Sports Modes", value: "00" },
+      ,
     ],
-    productFeatures: [
-      { feature: "Bluetooth", value: "V5.0" },
-      { feature: "Screen Size", value: "1.39 inches" },
-      {
-        feature: "Screen Resolution and Brightness",
-        value: "360*360, 500 Nits Daylight-Bright Display, 2.5D Curved Glass",
-      },
-      { feature: "Battery Capacity", value: "400 mAh" },
-      { feature: "Sports Modes", value: "100+" },
-      {
-        feature: "Health Monitoring",
-        value:
-          "SpO2, 24*7 Heart Rate Monitoring, Blood Pressure, High Heart Rate Alert",
-      },
-      { feature: "Health Tracking", value: "Menstrual Cycle, Sleep" },
-      {
-        feature: "Smart Features",
-        value: "Sedentary Alert, Weather, Alarm, Timer, Flashlight, Find Phone",
-      },
-      { feature: "Smart Controls", value: "Remote Camera and Music Player" },
-      {
-        feature: "Bluetooth Calling",
-        value: "inbuilt mic, speaker and dialer",
-      },
-      { feature: "All Messages Notifications", value: "Yes" },
-      { feature: "Custom & 100+ Watch Faces", value: "Yes" },
-      { feature: "Charging Time", value: "2 Hrs" },
-      { feature: "Battery Life", value: "10 Days" },
-      { feature: "Water Resistance Level", value: "IP68" },
-      { feature: "Compatible", value: "Android & iOS" },
-    ],
+    images: ["image1_url", "image2_url", "image3_url","image4_url"],
   };
-  const [product, setProduct] = useState(ProductData);
 
-  const handleInputChange = (e, section, index) => {
-    const { name, value, checked, type } = e.target;
-    let updatedProduct = { ...product };
+  const {
+    control,
+    handleSubmit,
+    register,
+    reset,
+    formState: { errors },
+  } = useForm({
+    defaultValues: initialData,
+  });
 
-    if (section === 'general') {
-      updatedProduct[name] = value;
-    } else if (section === 'colors' || section === 'storage' || section === 'productFeatures') {
-      updatedProduct[section][index][name] = type === 'checkbox' ? checked : value;
+  //  COLOR APPEND / REMOVE
+  const {
+    fields: colorFields,
+    append: appendcolor,
+    remove: removecolor,
+  } = useFieldArray({
+    control,
+    name: "colors",
+  });
+
+  //  STORAGE APPEND / REMOVE
+  const {
+    fields: storageFields,
+    append: appendStorage,
+    remove: removeStorage,
+  } = useFieldArray({
+    control,
+    name: "storageOptions",
+  });
+
+  //  FEATURE APPEND / REMOVE
+  const {
+    fields: featureFields,
+    append: appendFeature,
+    remove: removeFeature,
+  } = useFieldArray({
+    control,
+    name: "features",
+  });
+
+  //  IMAGE APPEND / REMOVE
+  const {
+    fields: imageFields,
+    append: appendImage,
+    remove: removeImage,
+  } = useFieldArray({
+    control,
+    name: "images",
+  });
+  const onSubmit = async (data) => {
+    try {
+      const response = await fetch(`${VITE_API_URL}/api/product`, {
+        method: "POST",
+        headers: {
+         "content-type": "application/json",
+        },
+        body: JSON.stringify(data)
+      });
+      const userres = await response.json();
+      if (!userres.error) {
+        console.log(userres)
+        reset()
+      }
+    } catch (error) {
+      console.log(error);
+      console.log("some thing happend while fetching");
+
     }
-
-    setProduct(updatedProduct);
+    console.log(data);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    console.log('Product submitted:', product);
-  };
-  return  <form onSubmit={handleSubmit}>
-  <h2>General Information</h2>
-  
-  <div>
-    <label>
-      Name: 
-      <input
-      className="input outline outline-slate-300 outline-2 ms-2 input-sm"
-        type="text"
-        name="name"
-        value={product.name}
-        onChange={(e) => handleInputChange(e, 'general')}
-      />
-    </label>
-  </div>
-<div className="divider"></div>
-  <h2>Colors</h2>
-  {product.colors.map((color, index) => (
-    <div key={index}>
-      <label>
-        Name:
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="flex flex-col justify-start gap-8 w-full  p-5"
+    >
+      <h2 className="text-4xl mb-8 text-center">ADD PRODUCT</h2>
+      {/* NAME */}
+      <div>
+        <label className="text-lg font-sans font-semibold">Name : </label>
         <input
-        className="input outline outline-slate-300 outline-2 ms-2 input-sm"
+          className="input input-sm outline outline-1 outline-slate-500 border  mx-2"
           type="text"
-          name="name"
-          value={color.name}
-          onChange={(e) => handleInputChange(e, 'colors', index)}
+          {...register("name", { required: "Name is required" })}
         />
-      </label>
-      {/* <label>
-        Class:
-        <input
-        className="input outline outline-slate-300 outline-2 ms-2 input-sm "
-          type="text"
-          name="class"
-          value={color.class}
-          onChange={(e) => handleInputChange(e, 'colors', index)}
-        />
-      </label> */}
-    </div>
-  ))}
-<div className="divider"></div>
-  <h2>Storage</h2>
-  {product.storage.map((storage, index) => (
-    <div key={index}>
-      <label>
-        Name:
-        <input
-        className="input outline outline-slate-300 outline-2 ms-2 input-sm"
-          type="text"
-          name="name"
-          value={storage.name}
-          onChange={(e) => handleInputChange(e, 'storage', index)}
-        />
-      </label>
-      {/* <label>
-        In Stock:
-        <input
-        className="input outline outline-slate-300 outline-2 ms-2 input-sm"
-          type="checkbox"
-          name="inStock"
-          checked={storage.inStock}
-          onChange={(e) => handleInputChange(e, 'storage', index)}
-        />
-      </label> */}
-    </div>
-  ))}
-<div className="divider"></div>
-  <h2>Product Features</h2>
-  {product.productFeatures.map((feature, index) => (
-    <div key={index} className="mt-3 flex">
-      {/* <label>
-        Feature:
-        <input
-        className="input outline outline-slate-300 outline-2 ms-2 input-sm"
-          type="text"
-          name="feature"
-          value={feature.feature}
-          onChange={(e) => handleInputChange(e, 'productFeatures', index)}
-        />
-      </label> */}
-      <label>
-        {feature.feature} :
-        <input
-        className="input outline outline-slate-300 outline-2 ms-2 input-sm"
-          type="text"
-          name="value"
-          value={feature.value}
-          onChange={(e) => handleInputChange(e, 'productFeatures', index)}
-        />
-      </label>
-    </div>
-  ))}
+        {errors.name ? (
+          <p className="text-red-500 text-xs">{errors.name.message}</p>
+        ) : (
+          ""
+        )}
+      </div>
 
-  <button type="submit" className="btn">Submit</button>
-</form>;
+      {/* DESCRIPTEION */}
+      <div className="flex flex-col gap-5 md:flex-row">
+        <label className="text-lg font-sans font-semibold">
+          Description :{" "}
+        </label>
+        <textarea
+          placeholder="Bio"
+          className="textarea textarea-bordered textarea-lg w-full md:max-w-md"
+          {...register("description", { required: "Description is required" })}
+        />
+        {errors.description && (
+          <p className="text-red-500 text-xs">{errors.description.message}</p>
+        )}
+      </div>
+
+      {/* COLORS */}
+      <div className="flex flex-col gap-5 md:flex-row">
+        <label className="text-lg font-sans font-semibold">Colors:</label>
+        <div className="flex  flex-col gap-4 gamx-2">
+          {colorFields.map((field, index) => (
+            <div key={field.id} className="flex">
+              <div>
+                <Controller
+                name={`colors.${index}`}
+                control={control}
+                rules={{ required: "color is required" }}
+                render={({ field }) => (
+                  <input
+                    className="input input-sm outline outline-1 outline-slate-500 border  "
+                    {...field}
+                  />
+                )}
+              />
+              {errors.colors?.[index] && (
+                <p className="text-red-500 text-xs">{errors.colors[index].message}</p>
+              )}
+              </div>
+              
+
+              <button
+                type="button"
+                className="btn btn-sm btn-error"
+                onClick={() => removecolor(index)}
+              >
+                remove
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            className="btn btn-sm btn-success"
+            onClick={() => appendcolor("")}
+          >
+            add color
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <label className="text-lg font-sans font-semibold">Old Price:</label>
+        <input
+          className="input input-sm outline outline-1 outline-slate-500 border  mx-2"
+          type="number"
+          {...register("price.oldPrice", { required: "Old price is required" })}
+        />
+        {errors.price?.oldPrice && (
+          <p className="text-red-500 text-xs">{errors.price.oldPrice.message}</p>
+        )}
+      </div>
+
+      <div>
+        <label className="text-lg font-sans font-semibold">New Price:</label>
+        <input
+          className="input input-sm outline outline-1 outline-slate-500 border  mx-2"
+          type="number"
+          {...register("price.newPrice", { required: "New price is needed" })}
+        />
+        {errors.price?.newPrice && (
+          <p className="text-red-500 text-xs">{errors.price.newPrice.message}</p>
+        )}
+      </div>
+
+      {/* STORAGE OPTION */}
+      <div className="flex flex-col gap-5 md:flex-row">
+        <label className="text-lg font-sans font-semibold">
+          Storage Options:
+        </label>
+        <div className="flex flex-col gap-3">
+          {storageFields.map((field, index) => (
+            <div key={field.id} className="flex gap-3">
+              <div className="flex flex-col">
+              <Controller
+                name={`storageOptions.${index}.storage`}
+                control={control}
+                rules={{ required: "Storage option is required" }}
+                render={({ field }) => (
+                  <input
+                    className="input input-sm outline outline-1 outline-slate-500 border"
+                    {...field}
+                  />
+                )}
+              />
+              {errors.storageOptions?.[index]?.storage && (
+                <p className="text-red-500 text-xs">{errors.storageOptions[index].storage.message}</p>
+              )}
+              </div>
+              <div className="flex flex-col">
+              <Controller
+                name={`storageOptions.${index}.price`}
+                control={control}
+                rules={{ required: "price is required" }}
+                render={({ field }) => (
+                  <input
+                    className="input input-sm outline outline-1 outline-slate-500 border"
+                    {...field}
+                  />
+                )}
+              />
+              {errors.storageOptions?.[index]?.price && (
+                <p className="text-red-500 text-xs">{errors.storageOptions[index].price.message}</p>
+              )}
+              </div>
+              
+              <button
+                type="button"
+                className="btn btn-sm btn-error"
+                onClick={() => removeStorage(index)}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            className="btn btn-sm btn-success"
+            onClick={() => appendStorage({ storage: "" })}
+          >
+            Add Storage Option
+          </button>
+        </div>
+      </div>
+
+      {/* FEATURES  */}
+
+      <div className="flex flex-col gap-5 md:flex-row">
+        <label className="text-lg font-sans font-semibold">Features:</label>
+        <div className="flex flex-col gap-5">
+          {featureFields.map((field, index) => (
+            <div key={field.id} className="flex flex-wrap">
+              {/* FEATURE */}
+              <div className="flex flex-col mx-2">
+                <Controller
+                  name={`features.${index}.feature`}
+                  control={control}
+                  rules={{ required: "feature are needed" }}
+                  render={({ field }) => (
+                    <input
+                      className="input input-sm outline outline-1 outline-slate-500 border "
+                      {...field}
+                    />
+                  )}
+                />
+                {errors.features?.[index]?.feature && (
+                  <p className="text-red-500 text-xs">{errors.features[index].feature.message}</p>
+                )}
+              </div>
+                {/* VALUE */}
+              <div className="flex flex-col mx-2">
+              <Controller
+                name={`features.${index}.value`}
+                control={control}
+                rules={{ required: "Image URL is required" }}
+                render={({ field }) => (
+                  <input
+                    className="input input-sm outline outline-1 outline-slate-500 border "
+                    {...field}
+                  />
+                )}
+              />
+              {errors.features?.[index]?.value && (
+                <p className="text-red-500 text-xs">{errors.features[index].value.message}</p>
+              )}</div>
+              <button
+                type="button"
+                className="btn btn-sm"
+                onClick={() => removeFeature(index)}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            className="btn btn-sm"
+            onClick={() => appendFeature({ feature: "", value: "" })}
+          >
+            Add Feature
+          </button>
+        </div>
+      </div>
+
+      {/* IMAGE */}
+
+      <div className="flex flex-col gap-5 md:flex-row">
+        <label className="text-lg font-sans font-semibold">Images:</label>
+        <div className="flex flex-col gap-4">
+          {imageFields.map((field, index) => (
+            <div key={field.id} className="flex">
+              <div className="mx-2">
+              <Controller
+                name={`images.${index}`}
+                control={control}
+                rules={{ required: "Image URL is required" }}
+                render={({ field }) => (
+                  <input
+                    className="input input-sm outline outline-1 outline-slate-500 border  "
+                    {...field}
+                  />
+                )}
+              />
+              {errors.images?.[index] && (
+                <p className="text-red-500 text-xs">{errors.images[index].message}</p>
+              )}</div>
+              <button
+                type="button"
+                className="btn btn-sm"
+                onClick={() => removeImage(index)}
+              >
+                Remove
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            className="btn btn-sm"
+            onClick={() => appendImage("")}
+          >
+            Add Image
+          </button>
+        </div>
+      </div>
+
+      <button type="submit" className="btn max-w-md self-center">
+        Submit
+      </button>
+    </form>
+  );
 };
 
 export default AddProduct;

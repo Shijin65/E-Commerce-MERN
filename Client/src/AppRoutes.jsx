@@ -8,7 +8,8 @@ import AdminDashBoard from './pages/Admin/AdminDashBoard';
 import ShowAllUsers from './pages/Admin/ShowAllUsers';
 import ShowAllProducts from './pages/Admin/ShowAllProducts';
 import AddProduct from './pages/Admin/AddProduct';
-import CartPage from './pages/Admin/CartPage';
+import CartPage from './pages/CartPage';
+
 
 function AppRoutes() {
   return (

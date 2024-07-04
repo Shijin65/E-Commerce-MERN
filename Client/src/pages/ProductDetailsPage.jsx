@@ -1,84 +1,106 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import productImage from "../assets/productImage.png";
 import { FaCheck } from "react-icons/fa";
 import { useParams } from "react-router-dom";
 import { GoDotFill } from "react-icons/go";
-const ProductDetailsPage = () => {
-  const ProductData = {
-    name: "iPhone 12 Pro max",
+import { useNavigate } from "react-router-dom";
 
-    colors: [
-      {
-        name: "black",
-        class: "bg-black checked:bg-black",
-        selectedClass: "ring-gray-400",
-      },
-      {
-        name: "Red",
-        class: "bg-red-500 checked:bg-red-500",
-        selectedClass: "ring-gray-400",
-      },
-      {
-        name: "Green",
-        class: "bg-green-800 checked:bg-green-800",
-        selectedClass: "ring-gray-900",
-      },
-      {
-        name: "Gray",
-        class: "bg-gray-400 checked:bg-gray-400",
-        selectedClass: "ring-gray-900",
-      },
-      {
-        name: "Blue",
-        class: "bg-blue-600 checked:bg-blue-800",
-        selectedClass: "ring-gray-900",
-      },
-    ],
-    storage: [
-      { name: "128GB", inStock: false },
-      { name: "256GB", inStock: true },
-      { name: "514GB", inStock: true },
-      { name: "1TB", inStock: true },
-    ],
-    productFeatures: [
-      { feature: "Bluetooth", value: "V5.0" },
-      { feature: "Screen Size", value: "1.39 inches" },
-      {
-        feature: "Screen Resolution and Brightness",
-        value: "360*360, 500 Nits Daylight-Bright Display, 2.5D Curved Glass",
-      },
-      { feature: "Battery Capacity", value: "400 mAh" },
-      { feature: "Sports Modes", value: "100+" },
-      {
-        feature: "Health Monitoring",
-        value:
-          "SpO2, 24*7 Heart Rate Monitoring, Blood Pressure, High Heart Rate Alert",
-      },
-      { feature: "Health Tracking", value: "Menstrual Cycle, Sleep" },
-      {
-        feature: "Smart Features",
-        value: "Sedentary Alert, Weather, Alarm, Timer, Flashlight, Find Phone",
-      },
-      { feature: "Smart Controls", value: "Remote Camera and Music Player" },
-      {
-        feature: "Bluetooth Calling",
-        value: "inbuilt mic, speaker and dialer",
-      },
-      { feature: "All Messages Notifications", value: "Yes" },
-      { feature: "Custom & 100+ Watch Faces", value: "Yes" },
-      { feature: "Charging Time", value: "2 Hrs" },
-      { feature: "Battery Life", value: "10 Days" },
-      { feature: "Water Resistance Level", value: "IP68" },
-      { feature: "Compatible", value: "Android & iOS" },
-    ],
-  };
+const ProductDetailsPage = () => {
+  // const ProductData = {
+  //   name: "iPhone 12 Pro max",
+
+  //   colors: [
+  //     {
+  //       name: "black",
+  //       class: "bg-black checked:bg-black",
+  //       selectedClass: "ring-gray-400",
+  //     },
+  //     {
+  //       name: "Red",
+  //       class: "bg-red-500 checked:bg-red-500",
+  //       selectedClass: "ring-gray-400",
+  //     },
+  //     {
+  //       name: "Green",
+  //       class: "bg-green-800 checked:bg-green-800",
+  //       selectedClass: "ring-gray-900",
+  //     },
+  //     {
+  //       name: "Gray",
+  //       class: "bg-gray-400 checked:bg-gray-400",
+  //       selectedClass: "ring-gray-900",
+  //     },
+  //     {
+  //       name: "Blue",
+  //       class: "bg-blue-600 checked:bg-blue-800",
+  //       selectedClass: "ring-gray-900",
+  //     },
+  //   ],
+  //   storage: [
+  //     { name: "128GB", inStock: false },
+  //     { name: "256GB", inStock: true },
+  //     { name: "514GB", inStock: true },
+  //     { name: "1TB", inStock: true },
+  //   ],
+  //   productFeatures: [
+  //     { feature: "Bluetooth", value: "V5.0" },
+  //     { feature: "Screen Size", value: "1.39 inches" },
+  //     {
+  //       feature: "Screen Resolution and Brightness",
+  //       value: "360*360, 500 Nits Daylight-Bright Display, 2.5D Curved Glass",
+  //     },
+  //     { feature: "Battery Capacity", value: "400 mAh" },
+  //     { feature: "Sports Modes", value: "100+" },
+  //     {
+  //       feature: "Health Monitoring",
+  //       value:
+  //         "SpO2, 24*7 Heart Rate Monitoring, Blood Pressure, High Heart Rate Alert",
+  //     },
+  //     { feature: "Health Tracking", value: "Menstrual Cycle, Sleep" },
+  //     {
+  //       feature: "Smart Features",
+  //       value: "Sedentary Alert, Weather, Alarm, Timer, Flashlight, Find Phone",
+  //     },
+  //     { feature: "Smart Controls", value: "Remote Camera and Music Player" },
+  //     {
+  //       feature: "Bluetooth Calling",
+  //       value: "inbuilt mic, speaker and dialer",
+  //     },
+  //     { feature: "All Messages Notifications", value: "Yes" },
+  //     { feature: "Custom & 100+ Watch Faces", value: "Yes" },
+  //     { feature: "Charging Time", value: "2 Hrs" },
+  //     { feature: "Battery Life", value: "10 Days" },
+  //     { feature: "Water Resistance Level", value: "IP68" },
+  //     { feature: "Compatible", value: "Android & iOS" },
+  //   ],
+  // };
   const { productId } = useParams();
-  console.log(productId);
+  console.log(productId)
+  const navigate = useNavigate();
+  const [ProductData ,setProduct]=useState([])
+
+  useEffect(() => {
+    GetProductId()
+  }, [])
+  
+  const GetProductId =async()=>{
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/product/${productId}`,
+      {
+        method: "GET",
+      }
+    )
+    const userres = await response.json();
+    if (!userres.error) {
+      console.log(userres.singleProduct
+      );
+        setProduct(userres.singleProduct)
+    }
+  }
+  
   const [Productspec, setProductspec] = useState({
     count: 1,
     color: "black",
     storage: "128GB",
-
   });
 
   console.log(Productspec);
@@ -157,7 +179,7 @@ const ProductDetailsPage = () => {
               <span className="font-bold  ">Colour : </span> {Productspec.color}
             </h2>
             <div className="flex  md:gap-14  gap-6 mt-8">
-              {ProductData.colors.map((color) => (
+              {ProductData?.colors.map((color) => (
                 <label
                   key={color.name}
                   className="flex items-center cursor-pointer"
@@ -186,7 +208,7 @@ const ProductDetailsPage = () => {
             {/* Memory */}
             <h2 className="my-5 font-semibold">Internal Memory</h2>
             <div className="flex  md:gap-14 gap-6 mt-8 ">
-              {ProductData.storage.map((space) => (
+              {ProductData?.storage.map((space) => (
                 <label
                   key={space.name}
                   className="flex items-center cursor-pointer outline outline-2  outline-slate-400"
@@ -201,7 +223,8 @@ const ProductDetailsPage = () => {
                   />
                   <div
                     className={`flex items-center justify-center border-2 rounded-none w-16 md:min-w-20 hover:none p-2 ${
-                      Productspec.storage === space.name && "bg-black text-white "
+                      Productspec.storage === space.name &&
+                      "bg-black text-white "
                     }`}
                   >
                     {space.name}
@@ -227,13 +250,23 @@ const ProductDetailsPage = () => {
                 <div
                   className="border-2 p-3 cursor-pointer"
                   onClick={() => {
-                    setProductspec({ ...Productspec, count: Productspec.count + 1 });
+                    setProductspec({
+                      ...Productspec,
+                      count: Productspec.count + 1,
+                    });
                   }}
                 >
                   +
                 </div>
               </div>
-              <button className="btn bg-black hover:bg-black rounded-none text-white">
+              <button
+                onClick={() =>
+                  navigate({
+                    pathname: `/cart/${productId}`,
+                  })
+                }
+                className="btn bg-black hover:bg-black rounded-none text-white"
+              >
                 ADD TO CART
               </button>
             </div>
@@ -265,7 +298,8 @@ const ProductDetailsPage = () => {
             {ProductData.productFeatures.map((item) => (
               <h1 className="flex gap-5 p-1">
                 {" "}
-                <GoDotFill />{item.feature} : {item.value}
+                <GoDotFill />
+                {item.feature} : {item.value}
               </h1>
             ))}
           </div>

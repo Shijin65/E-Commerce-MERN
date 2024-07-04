@@ -2,56 +2,8 @@ import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
 
 const ProductSection = () => {
-  // const products = [
-  //   {
-  //     id: 1,
-  //     name: "iPhone 14 Pro max 256GB - Deep Purple",
-  //     price: "4,699.00",
-  //     oldPrice: "4,699.00",
-  //     category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
-  //     isHot: true,
-  //   },
-  //   {
-  //     id: 2,
-  //     name: "iPhone 13 Pro max 256GB - Deep Purple",
-  //     price: "4,699.00",
-  //     oldPrice: "4,699.00",
-  //     category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
-  //     isHot: true,
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "iPhone 12 Pro max 256GB - Deep Purple",
-  //     price: "4,699.00",
-  //     oldPrice: "4,699.00",
-  //     category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
-  //     isHot: true,
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "iPhone 11 Pro max 256GB - Deep Purple",
-  //     price: "4,699.00",
-  //     oldPrice: "4,699.00",
-  //     category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
-  //     isHot: true,
-  //   },
-  //   {
-  //     id: 3,
-  //     name: "iPhone 12 Pro max 256GB - Deep Purple",
-  //     price: "4,699.00",
-  //     oldPrice: "4,699.00",
-  //     category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
-  //     isHot: true,
-  //   },
-  //   {
-  //     id: 4,
-  //     name: "iPhone 11 Pro max 256GB - Deep Purple",
-  //     price: "4,699.00",
-  //     oldPrice: "4,699.00",
-  //     category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
-  //     isHot: true,
-  //   },
-  // ];
+
+  
 
   const [products ,setProducts]=useState([])
 
@@ -81,7 +33,7 @@ const ProductSection = () => {
             <ProductCard product={products[0]} bigOne />
           </div>
           <div className="grid grid-cols-2  col-span-4 md:grid-cols-3  lg:col-span-2 relative">
-            {products.slice(1).map((product,index) => (
+            {products.slice(1,7).map((product,index) => (
                <ProductCard key={index}  product={product}/>
             ))}
           </div>

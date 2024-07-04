@@ -4,11 +4,12 @@ import { FaPlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 const ProductCard = ({ bigOne, item ,product}) => {
   const navigate = useNavigate();
+  // console.log(product?.storageOptions[1])
   return (
     <div
       onClick={() =>
         navigate({
-          pathname: `/productdetails/${item?.id}`,
+          pathname: `/productdetails/${product?._id}`,
         })
       }
       className={` bg-base-100   border-2 hover:bg-gray-200 ${
@@ -19,7 +20,7 @@ const ProductCard = ({ bigOne, item ,product}) => {
         HOT
       </h1>
       <figure className={`px-10 flex justify-center `}>
-        <img src={product?.images[1]} alt="phone" className={`${bigOne ? "h-64" : "h-36"}`} />
+        <img src={product?.images[1]} alt="phone" className={`${bigOne ? "h-64" : "h-40"}`} />
       </figure>
       <div
         className={`flex flex-col  w-full   ${
@@ -29,7 +30,7 @@ const ProductCard = ({ bigOne, item ,product}) => {
         <div className="flex justify-between w-full mt-3">
           {bigOne ? (
             <h1 className="text-center font-semibold font-mono text-[10px] text-sky-500  items-end   w-full">
-              AUDIO AMPLIFIER, HDMI PROJECTORS
+              {product?.features[0].feature} : {product?.features[0].value}
             </h1>
           ) : (
             <>
@@ -48,7 +49,7 @@ const ProductCard = ({ bigOne, item ,product}) => {
             bigOne ? "text-center" : "text-xs"
           }`}
         >
-           {product?.name} 256GB - Deep Purple
+           {product?.name}  - {product?.colors[1]}
         </h2>
 
         <div
@@ -57,8 +58,8 @@ const ProductCard = ({ bigOne, item ,product}) => {
           }`}
         >
           <h3 className="text-[12px]">INR</h3>
-          <h2 className="font-bold text-black">4,699.00</h2>
-          <h2 className="line">4,699.00</h2>
+          <h2 className="font-bold text-black">{product?.price.oldPrice}</h2>
+          <h2 className="line">{product?.price.newPrice}</h2>
         </div>
         {bigOne ? (
           <div className="flex justify-center">

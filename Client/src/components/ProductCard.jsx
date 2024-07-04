@@ -1,23 +1,25 @@
 import React from "react";
 import productImage from "../assets/productImage.png";
 import { FaPlus } from "react-icons/fa6";
-import { Navigate, useNavigate } from "react-router-dom";
-const ProductCard = ({ bigOne,item }) => {
-  const navigate = useNavigate()
+import { useNavigate } from "react-router-dom";
+const ProductCard = ({ bigOne, item ,product}) => {
+  const navigate = useNavigate();
   return (
     <div
-      onClick={()=>navigate({
-        pathname: `/productdetails/${item?.id}`,
-      })}
+      onClick={() =>
+        navigate({
+          pathname: `/productdetails/${item?.id}`,
+        })
+      }
       className={` bg-base-100   border-2 hover:bg-gray-200 ${
-        bigOne ? "h-full w-full p-10" : "md:w- p-1 md:p-4"
+        bigOne ? "h-full w-full p-10" : "md:w- p-1 md:p-4 "
       }`}
     >
       <h1 className="text-[10px] font-medium  flex justify-center bg-green-700 text-white w-10">
         HOT
       </h1>
-      <figure className={`px-10 flex justify-center ${bigOne ? "h-64" : ""}`}>
-        <img src={productImage} alt="phone" className="" />
+      <figure className={`px-10 flex justify-center `}>
+        <img src={product?.images[1]} alt="phone" className={`${bigOne ? "h-64" : "h-36"}`} />
       </figure>
       <div
         className={`flex flex-col  w-full   ${
@@ -46,7 +48,7 @@ const ProductCard = ({ bigOne,item }) => {
             bigOne ? "text-center" : "text-xs"
           }`}
         >
-          iPhone 14 Pro max 256GB - Deep Purple
+           {product?.name} 256GB - Deep Purple
         </h2>
 
         <div
@@ -59,9 +61,12 @@ const ProductCard = ({ bigOne,item }) => {
           <h2 className="line">4,699.00</h2>
         </div>
         {bigOne ? (
-          <button className="btn bg-sky-600 text-white rounded-none mt-10 ">
+          <div className="flex justify-center">
+            <button className="btn w-44 bg-sky-600 text-white rounded-none mt-10 ">
             ADD TO CART
           </button>
+          </div>
+          
         ) : (
           ""
         )}

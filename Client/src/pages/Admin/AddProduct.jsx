@@ -88,6 +88,7 @@ const AddProduct = () => {
       });
       const userres = await response.json();
       if (!userres.error) {
+        alert("Product have been added")
         console.log(userres)
         reset()
       }

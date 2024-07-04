@@ -8,6 +8,7 @@ import AdminDashBoard from './pages/Admin/AdminDashBoard';
 import ShowAllUsers from './pages/Admin/ShowAllUsers';
 import ShowAllProducts from './pages/Admin/ShowAllProducts';
 import AddProduct from './pages/Admin/AddProduct';
+import CartPage from './pages/Admin/CartPage';
 
 function AppRoutes() {
   return (
@@ -20,6 +21,8 @@ function AppRoutes() {
         <Route path='show-all-products' element={<ShowAllProducts />} />
         <Route path='add-product' element={<AddProduct />} />
       </Route>
+      <Route path='/cart' element={<Layout><CartPage /></Layout>} />
+
       <Route path='*' element={<Navigate to={"/"} />} />
     </Routes>
   )

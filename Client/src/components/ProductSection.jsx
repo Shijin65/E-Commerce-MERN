@@ -1,58 +1,76 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
-import { Link } from "react-router-dom";
 
 const ProductSection = () => {
-  const products = [
-    {
-      id: 1,
-      name: "iPhone 14 Pro max 256GB - Deep Purple",
-      price: "4,699.00",
-      oldPrice: "4,699.00",
-      category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
-      isHot: true,
-    },
-    {
-      id: 2,
-      name: "iPhone 13 Pro max 256GB - Deep Purple",
-      price: "4,699.00",
-      oldPrice: "4,699.00",
-      category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
-      isHot: true,
-    },
-    {
-      id: 3,
-      name: "iPhone 12 Pro max 256GB - Deep Purple",
-      price: "4,699.00",
-      oldPrice: "4,699.00",
-      category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
-      isHot: true,
-    },
-    {
-      id: 4,
-      name: "iPhone 11 Pro max 256GB - Deep Purple",
-      price: "4,699.00",
-      oldPrice: "4,699.00",
-      category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
-      isHot: true,
-    },
-    {
-      id: 3,
-      name: "iPhone 12 Pro max 256GB - Deep Purple",
-      price: "4,699.00",
-      oldPrice: "4,699.00",
-      category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
-      isHot: true,
-    },
-    {
-      id: 4,
-      name: "iPhone 11 Pro max 256GB - Deep Purple",
-      price: "4,699.00",
-      oldPrice: "4,699.00",
-      category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
-      isHot: true,
-    },
-  ];
+  // const products = [
+  //   {
+  //     id: 1,
+  //     name: "iPhone 14 Pro max 256GB - Deep Purple",
+  //     price: "4,699.00",
+  //     oldPrice: "4,699.00",
+  //     category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
+  //     isHot: true,
+  //   },
+  //   {
+  //     id: 2,
+  //     name: "iPhone 13 Pro max 256GB - Deep Purple",
+  //     price: "4,699.00",
+  //     oldPrice: "4,699.00",
+  //     category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
+  //     isHot: true,
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "iPhone 12 Pro max 256GB - Deep Purple",
+  //     price: "4,699.00",
+  //     oldPrice: "4,699.00",
+  //     category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
+  //     isHot: true,
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "iPhone 11 Pro max 256GB - Deep Purple",
+  //     price: "4,699.00",
+  //     oldPrice: "4,699.00",
+  //     category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
+  //     isHot: true,
+  //   },
+  //   {
+  //     id: 3,
+  //     name: "iPhone 12 Pro max 256GB - Deep Purple",
+  //     price: "4,699.00",
+  //     oldPrice: "4,699.00",
+  //     category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
+  //     isHot: true,
+  //   },
+  //   {
+  //     id: 4,
+  //     name: "iPhone 11 Pro max 256GB - Deep Purple",
+  //     price: "4,699.00",
+  //     oldPrice: "4,699.00",
+  //     category: "AUDIO AMPLIFIER, HDMI PROJECTORS",
+  //     isHot: true,
+  //   },
+  // ];
+
+  const [products ,setProducts]=useState([])
+
+  useEffect(() => {
+    handleproduct()
+  }, [])
+  
+  const handleproduct =async()=>{
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/product`,
+      {
+        method: "GET",
+      }
+    )
+    const userres = await response.json();
+    if (!userres.error) {
+      console.log(userres.AllProducts);
+        setProducts(userres.AllProducts)
+    }
+  }
   return (
     <div className="lg: w-full   flex flex-col items-center">
       <div>
@@ -63,8 +81,8 @@ const ProductSection = () => {
             <ProductCard product={products[0]} bigOne />
           </div>
           <div className="grid grid-cols-2  col-span-4 md:grid-cols-3  lg:col-span-2 relative">
-            {products.slice(1).map((item,index) => (
-               <ProductCard key={index} item={item}/>
+            {products.slice(1).map((product,index) => (
+               <ProductCard key={index}  product={product}/>
             ))}
           </div>
         </div>

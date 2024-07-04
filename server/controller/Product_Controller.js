@@ -7,4 +7,22 @@ const createProduct = asyncHandler(async (req, res) => {
    res.status(201).json(newProduct)
 });
 
-module.exports = { createProduct};
+const userGetAllProduct = asyncHandler(async(req,res)=>{
+  try {
+    const AllProducts = await Product.find();
+    res.status(200).json({ AllProducts });
+  } catch (error) {
+    console.log("catched error", error);
+    res.status(404).json({ message: "not able to find products" });
+  }
+})
+
+const getProductById = asyncHandler(async(req,res)=>{
+  try {
+  
+} catch (error) {
+  console.log(error)
+  
+}
+})
+module.exports = { createProduct ,userGetAllProduct ,getProductById};

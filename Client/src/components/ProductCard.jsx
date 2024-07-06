@@ -1,5 +1,5 @@
 import React from "react";
-import productImage from "../assets/productImage.png";
+
 import { FaPlus } from "react-icons/fa6";
 import { useNavigate } from "react-router-dom";
 const ProductCard = ({ bigOne, item ,product}) => {
@@ -8,9 +8,7 @@ const ProductCard = ({ bigOne, item ,product}) => {
   return (
     <div
       onClick={() =>
-        navigate({
-          pathname: `/productdetails/${product?._id}`,
-        })
+        navigate(`/productdetails/${product?._id}`,{replace:true})
       }
       className={` bg-base-100   border-2 hover:bg-gray-200 ${
         bigOne ? "h-full w-full p-10" : "md:w- p-1 md:p-4 "

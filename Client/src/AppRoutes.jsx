@@ -9,6 +9,9 @@ import ShowAllUsers from './pages/Admin/ShowAllUsers';
 import ShowAllProducts from './pages/Admin/ShowAllProducts';
 import AddProduct from './pages/Admin/AddProduct';
 import CartPage from './pages/CartPage';
+import OrderSuccessPage from './pages/OrderSuccessPage';
+import ProtectedRoute from './components/ProtectedRoute';
+import EditProduct from './pages/Admin/EditProduct';
 
 
 function AppRoutes() {
@@ -21,9 +24,17 @@ function AppRoutes() {
         <Route path='show-all-users' element={<ShowAllUsers />} />
         <Route path='show-all-products' element={<ShowAllProducts />} />
         <Route path='add-product' element={<AddProduct />} />
+        <Route path='edit-product/:productId' element={<EditProduct />} />
       </Route>
-      <Route path='/cart' element={<Layout><CartPage /></Layout>} />
-
+      <Route
+          path="/cart"
+          element={
+            <Layout>
+              <ProtectedRoute element={CartPage} />
+            </Layout>
+          }
+        />
+      <Route path='/ordersuccess' element={<Layout><OrderSuccessPage /></Layout>} />
       <Route path='*' element={<Navigate to={"/"} />} />
     </Routes>
   )

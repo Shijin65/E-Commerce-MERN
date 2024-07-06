@@ -23,7 +23,7 @@ const userGetAllProduct = asyncHandler(async (req, res) => {
 const GetProductById = asyncHandler(async (req, res) => {
   try {
     const productId = req.params.productId;
-    console.log(productId)
+    // console.log(productId)
     const singleProduct = await Product.findById(productId);
     if (!singleProduct) {
       console.log("product not available");
@@ -34,4 +34,27 @@ const GetProductById = asyncHandler(async (req, res) => {
     console.log(error);
   }
 });
-module.exports = { createProduct, userGetAllProduct, GetProductById };
+
+const updateProduct = asyncHandler(async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    console.log(productId)
+    const  data  = req.body
+    // console.log(data);
+    const updatedProduct = await Product.findByIdAndUpdate(productId, data, {
+      new: true,
+      runValidators: true,
+    });
+    if (updatedProduct) {
+      res.status(200).json({ updatedProduct });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+module.exports = {
+  createProduct,
+  userGetAllProduct,
+  GetProductById,
+  updateProduct,
+};

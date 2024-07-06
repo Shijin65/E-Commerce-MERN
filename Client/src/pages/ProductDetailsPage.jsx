@@ -1,134 +1,115 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import productImage from "../assets/productImage.png";
 import { FaCheck } from "react-icons/fa";
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { GoDotFill } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../context/Authcontext";
 
 const ProductDetailsPage = () => {
-  // const ProductData = {
-  //   name: "iPhone 12 Pro max",
-
-  //   colors: [
-  //     {
-  //       name: "black",
-  //       class: "bg-black checked:bg-black",
-  //       selectedClass: "ring-gray-400",
-  //     },
-  //     {
-  //       name: "Red",
-  //       class: "bg-red-500 checked:bg-red-500",
-  //       selectedClass: "ring-gray-400",
-  //     },
-  //     {
-  //       name: "Green",
-  //       class: "bg-green-800 checked:bg-green-800",
-  //       selectedClass: "ring-gray-900",
-  //     },
-  //     {
-  //       name: "Gray",
-  //       class: "bg-gray-400 checked:bg-gray-400",
-  //       selectedClass: "ring-gray-900",
-  //     },
-  //     {
-  //       name: "Blue",
-  //       class: "bg-blue-600 checked:bg-blue-800",
-  //       selectedClass: "ring-gray-900",
-  //     },
-  //   ],
-  //   storage: [
-  //     { name: "128GB", inStock: false },
-  //     { name: "256GB", inStock: true },
-  //     { name: "514GB", inStock: true },
-  //     { name: "1TB", inStock: true },
-  //   ],
-  //   productFeatures: [
-  //     { feature: "Bluetooth", value: "V5.0" },
-  //     { feature: "Screen Size", value: "1.39 inches" },
-  //     {
-  //       feature: "Screen Resolution and Brightness",
-  //       value: "360*360, 500 Nits Daylight-Bright Display, 2.5D Curved Glass",
-  //     },
-  //     { feature: "Battery Capacity", value: "400 mAh" },
-  //     { feature: "Sports Modes", value: "100+" },
-  //     {
-  //       feature: "Health Monitoring",
-  //       value:
-  //         "SpO2, 24*7 Heart Rate Monitoring, Blood Pressure, High Heart Rate Alert",
-  //     },
-  //     { feature: "Health Tracking", value: "Menstrual Cycle, Sleep" },
-  //     {
-  //       feature: "Smart Features",
-  //       value: "Sedentary Alert, Weather, Alarm, Timer, Flashlight, Find Phone",
-  //     },
-  //     { feature: "Smart Controls", value: "Remote Camera and Music Player" },
-  //     {
-  //       feature: "Bluetooth Calling",
-  //       value: "inbuilt mic, speaker and dialer",
-  //     },
-  //     { feature: "All Messages Notifications", value: "Yes" },
-  //     { feature: "Custom & 100+ Watch Faces", value: "Yes" },
-  //     { feature: "Charging Time", value: "2 Hrs" },
-  //     { feature: "Battery Life", value: "10 Days" },
-  //     { feature: "Water Resistance Level", value: "IP68" },
-  //     { feature: "Compatible", value: "Android & iOS" },
-  //   ],
-  // };
   const { productId } = useParams();
-  console.log(productId)
   const navigate = useNavigate();
-  const [ProductData ,setProduct]=useState([])
+  const [Product, setProduct] = useState();
+  const user = useContext(AuthContext)
+  const location= useLocation()
 
-  useEffect(() => {
-    GetProductId()
-  }, [])
-  
-  const GetProductId =async()=>{
-    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/product/${productId}`,
-      {
-        method: "GET",
-      }
-    )
-    const userres = await response.json();
-    if (!userres.error) {
-      console.log(userres.singleProduct
-      );
-        setProduct(userres.singleProduct)
-    }
-  }
-  
+
   const [Productspec, setProductspec] = useState({
     count: 1,
-    color: "black",
-    storage: "128GB",
+    color: "",
+    storage: "",
+    price: "",
+    _id: productId,
   });
 
-  console.log(Productspec);
+  console.log(Productspec)
+ 
+  useEffect(() => {
+     
+    const GetSingleProductId = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/product/${productId}`,
+          {
+            method: "GET",
+          }
+        );
+        const userres = await response.json();
+        if (!userres.error) {
+          setProduct(userres.singleProduct);
+          setProductspec({
+            ...Productspec,
+            price: userres.singleProduct.price?.newPrice,
+          });
+        }
+      } catch (error) {
+        console.log("some thing went wrong while featchin the data", error);
+      }
+    };
+    GetSingleProductId();
+  }, [productId]);
+
+  const handleAddToCart = () => {
+
+    
+    if (user.user) {
+      navigate("/cart",{replace:true})
+    }else{
+      localStorage.setItem(`cartItem`, JSON.stringify(Productspec));
+      navigate('/login', {state: { from: location } })
+      alert("Product drafted");
+    }
+    // navigate({
+    //   pathname: `/cart`,
+    // });
+  };
+
+
   const handleColorChange = (event) => {
     const { name, value } = event.target;
     setProductspec({ ...Productspec, [name]: value });
   };
-  const handleStorageChange = (event) => {
+
+
+  const handleStorageChange = (event, price) => {
     const { name, value } = event.target;
-    setProductspec({ ...Productspec, [name]: value });
+
+    setProductspec({ ...Productspec, [name]: value, price: price });
   };
 
+      const cartItem= localStorage.getItem('cartItem')
+      
+        console.log(JSON.parse(cartItem))
+      // setProductspec(JSON.parse(cartItem))
+      
   return (
     <div>
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2  w-full h-full  p-10">
         {/* <!-- Image gallery --> */}
-        <div className="flex flex-col justify-center items-center w-full gap-8">
-          <img className="w-1/3 " src={productImage} alt="device image" />
+        <div className="flex flex-col justify-center items-center w-full gap-16">
+          <img className="w-1/3 " src={Product?.images[0]} alt="device image" />
           {/* small images */}
-          <div className="flex gap-8 ">
+          <div className="flex gap-16 ">
             <div>
-              <img className="w-28" src={productImage} alt="device image" />
+              <img
+                className="w-16"
+                src={Product?.images[1]}
+                alt="device image"
+              />
             </div>
             <div>
-              <img className="w-28" src={productImage} alt="device image" />
+              <img
+                className="w-16"
+                src={Product?.images[2]}
+                alt="device image"
+              />
             </div>
             <div>
-              <img className="w-28" src={productImage} alt="device image" />
+              <img
+                className="w-16"
+                src={Product?.images[3]}
+                alt="device image"
+              />
             </div>
           </div>
         </div>
@@ -136,10 +117,11 @@ const ProductDetailsPage = () => {
         {/* DETAILS */}
         <div className="flex flex-col gap-5 justify-center">
           {/* heading */}
-          <h1 className="text-2xl font-semibold text-black">
-            {" "}
-            iPhone 12 Pro max 256GB Deep Purple
-          </h1>
+          <div className="text-2xl font-semibold text-black  flex gap-4">
+            <h1 className="font-semibold">{Product?.name}</h1>{" "}
+            <h1>{Product?.storageOptions[0]?.storage}</h1>{" "}
+            <h1>{Product?.colors[1]}</h1>
+          </div>
 
           {/* rating */}
           <div className="flex gap-4 text-gray-500 items-center justify-start">
@@ -164,38 +146,37 @@ const ProductDetailsPage = () => {
           </div>
 
           {/* price */}
-          <div className={`flex  text-sm mt-2  text-gray-500   gap-8 `}>
+          <div
+            className={`flex font-semibold text-sm mt-2  text-gray-500   gap-8 `}
+          >
             <h3 className="text-[12px]">INR</h3>
-            <h2 className="font-bold text-black">4,699.00</h2>
-            <h2 className="line">4,699.00</h2>
+            <h2 className="font-extrabold text-black">
+              {Productspec.price ? Productspec.price : Product?.price?.newPrice}
+            </h2>
+            <h2 className="line ">{Product?.price?.oldPrice}</h2>
           </div>
-          <h1 className="text-gray-400 text- w-full">
-            Pellentesque habitant morbi tristique senectus et netus et malesuada
-            fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae,
-            ultricies eget, tempor sit amet, ante.
-          </h1>
+          <h1 className="text-gray-400 text- w-full">{Product?.description}</h1>
+          {/* COLOR */}
           <form action="">
             <h2 className="my-5">
               <span className="font-bold  ">Colour : </span> {Productspec.color}
             </h2>
             <div className="flex  md:gap-14  gap-6 mt-8">
-              {ProductData?.colors.map((color) => (
-                <label
-                  key={color.name}
-                  className="flex items-center cursor-pointer"
-                >
+              {Product?.colors?.map((color) => (
+                <label key={color} className="flex items-center cursor-pointer">
                   <input
                     type="radio"
                     name="color"
-                    value={color.name}
+                    value={color}
                     className="hidden"
-                    checked={Productspec.color === color.name}
+                    checked={Productspec.color === color}
                     onChange={handleColorChange}
                   />
                   <div
-                    className={`md:w-10 md:h-10 w-6 h-6 rounded-full flex items-center justify-center ${color.class}`}
+                    className={`md:w-10 md:h-10 w-6 h-6 rounded-full flex items-center justify-center border-2`}
+                    style={{ background: `${color}` }}
                   >
-                    {Productspec.color === color.name && (
+                    {Productspec.color === color && (
                       <div>
                         <FaCheck className="font-thin" color="white" />
                       </div>
@@ -208,31 +189,34 @@ const ProductDetailsPage = () => {
             {/* Memory */}
             <h2 className="my-5 font-semibold">Internal Memory</h2>
             <div className="flex  md:gap-14 gap-6 mt-8 ">
-              {ProductData?.storage.map((space) => (
+              {Product?.storageOptions.map((space, index) => (
                 <label
-                  key={space.name}
+                  key={space.storage}
                   className="flex items-center cursor-pointer outline outline-2  outline-slate-400"
                 >
                   <input
+                    defaultChecked={index === 0 ? true : false}
                     type="radio"
                     name="storage"
-                    value={space.name}
+                    value={space.storage}
                     className="hidden"
-                    checked={Productspec.storage === space.name}
-                    onChange={handleStorageChange}
+                    checked={Productspec.storage === space.storage}
+                    onChange={(event) =>
+                      handleStorageChange(event, space.price)
+                    }
                   />
                   <div
                     className={`flex items-center justify-center border-2 rounded-none w-16 md:min-w-20 hover:none p-2 ${
-                      Productspec.storage === space.name &&
+                      Productspec.storage === space.storage &&
                       "bg-black text-white "
                     }`}
                   >
-                    {space.name}
+                    {space.storage}
                   </div>
                 </label>
               ))}
             </div>
-
+            {/* SELECT COUNT */}
             <div className="flex justify-start mt-10 py-6 items-center gap-10 border-y-2 select-none">
               <div className="flex  text-xl">
                 <div
@@ -259,12 +243,9 @@ const ProductDetailsPage = () => {
                   +
                 </div>
               </div>
+              {/* ADD TO CART BUTTON */}
               <button
-                onClick={() =>
-                  navigate({
-                    pathname: `/cart/${productId}`,
-                  })
-                }
+                onClick={handleAddToCart}
                 className="btn bg-black hover:bg-black rounded-none text-white"
               >
                 ADD TO CART
@@ -295,8 +276,8 @@ const ProductDetailsPage = () => {
           />
 
           <div role="tabpanel" className="tab-content p-10 w-full ">
-            {ProductData.productFeatures.map((item) => (
-              <h1 className="flex gap-5 p-1">
+            {Product?.features.map((item,index) => (
+              <h1 key={index} className="flex gap-5 p-1">
                 {" "}
                 <GoDotFill />
                 {item.feature} : {item.value}

@@ -7,6 +7,7 @@ export const Authcontextprovider = ({ children }) => {
   const [user, setUser] = useState(null);
   const Navigate = useNavigate();
 
+  const location = useLocation();
   useEffect(() => {
     setUser(JSON.parse(localStorage.getItem("user")));
     currentUser();
@@ -56,6 +57,8 @@ export const Authcontextprovider = ({ children }) => {
     const userres = await res.json();
     if (!userres.error) {
       setUser(userres.user);
+      const from = location.state?.from?.pathname || '/';
+        Navigate(from, { replace: true });
     }
   };
 
@@ -74,7 +77,9 @@ export const Authcontextprovider = ({ children }) => {
       localStorage.setItem("auth", userres.accesstoken);
       localStorage.setItem("user", JSON.stringify(userres.user));
       setUser(userres.user);
-      Navigate("/", { replace: true });
+      const from = location.state?.from?.pathname || '/';
+      console.log(from)
+      Navigate(from, { replace: true });
     }else{
       console.log(error)
     }

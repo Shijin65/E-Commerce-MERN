@@ -18,6 +18,7 @@ const storageSchema = new mongoose.Schema({
 
 const productSchema = new mongoose.Schema({
   name: { type: String, required: true },
+  brand:{ type: String, required: true },
   colors: { type: [String], required: true },
   price: priceSchema,
   description: { type: String, required: true },

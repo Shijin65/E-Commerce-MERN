@@ -73,7 +73,7 @@ const LoginUser = asyncHanler(async (req, res) => {
         },
       },
       process.env.SECERT_ACCESSTOKEN,
-      { expiresIn: "10m" }
+      { expiresIn: "30m" }
     );
     res.status(200).json({ accesstoken, user });
   } else {

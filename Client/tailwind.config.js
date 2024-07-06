@@ -6,6 +6,12 @@ export default {
   },
   plugins: [require('daisyui'),require('@tailwindcss/aspect-ratio')],
   daisyui: {
-    themes: ['light']
+    themes:["light"],
+    theme: { 
+      extend: {
+        fontFamily: {
+          poppins: ['Poppins', 'sans-serif'],
+        },
+      },
   }
-};
+}}

@@ -20,6 +20,9 @@ const AdminMenu = () => {
       >
         Show All Users
       </NavLink>
+      {/* <NavLink to="/admin/add-product"  className="btn">
+         Product
+      </NavLink> */}
     </div>
   );
 };

@@ -5,8 +5,12 @@ import {
   FaLinkedinIn,
   FaYoutube,
   FaPhoneAlt,
+  FaShoppingBag,
 } from "react-icons/fa";
+import { MdAdminPanelSettings } from "react-icons/md";
+
 import logo from "../assets/logo.jpg";
+import { Link } from "react-router-dom";
 export default function Footer() {
   return (
     <footer className=" py-8 px-8 sm:px-16 mt-auto border-t-2">
@@ -79,8 +83,8 @@ export default function Footer() {
       </div>
 
       <div className="container mx-auto px-4 mt-8 border-t pt-4">
-        <p className="text-center text-gray-600">
-          Arab Deals © 2023. All Rights Reserved
+        <p className="text-center text-gray-600 flex justify-center gap-5 items-center">
+          Arab Deals © 2023. All Rights Reserved <Link to="/admin" replace={true}><MdAdminPanelSettings /></Link>
         </p>
       </div>
     </footer>

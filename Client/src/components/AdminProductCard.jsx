@@ -1,4 +1,5 @@
 import React from "react";
+import { NavLink } from "react-router-dom";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 
@@ -38,7 +39,7 @@ const AdminProductCard = ({ product , rerender}) => {
             <button onClick={handledelete} className="btn btn-error btn-sm">
               delete
             </button>
-            <button className="btn btn-primary btn-sm">Edit</button>
+            <NavLink to={`/admin/edit-product/${product._id}`} className="btn btn-primary btn-sm">Edit</NavLink>
           </div>
         </div>
       </div>

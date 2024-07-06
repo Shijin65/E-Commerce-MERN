@@ -103,7 +103,7 @@ const TopBrandCarosel = () => {
         ref={(el) => (carousel = el)}
         disableDotsControls
         responsive={{
-          0: { items: 8 },
+          0: { items: 6 },
           600: { items: 8 },
           1024: { items: 8 },
         }}

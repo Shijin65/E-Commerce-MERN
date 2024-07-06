@@ -12,6 +12,15 @@ const ShowAllUser = asyncHandler(async (req, res) => {
   }
 });
 
+const createProduct = asyncHandler(async (req, res) => {
+  const newProduct = new Product(req.body);
+  await newProduct
+    .save()
+    .then(() => console.log("Product saved!"))
+    .catch((error) => console.error(error));
+  res.status(201).json(newProduct);
+});
+
 const getAllProducts = asyncHandler(async (req, res) => {
   try {
     const AllProducts = await Product.find();
@@ -42,4 +51,4 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { ShowAllUser, getAllProducts, deleteProduct, deleteUser };
+module.exports = { ShowAllUser, getAllProducts, deleteProduct, deleteUser,createProduct };

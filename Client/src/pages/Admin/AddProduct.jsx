@@ -1,10 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
-const AddProduct = () => {
+const AddProduct = ({productId}) => {
   const initialData = {
     name: "iphone",
+    brand:"apple",
     colors: ["Black", "White", "Blue"],
     price: {
       currency: "USD",
@@ -25,7 +26,7 @@ const AddProduct = () => {
       { feature: "Sports Modes", value: "00" },
       ,
     ],
-    images: ["image1_url", "image2_url", "image3_url","image4_url"],
+    images: ["image1_url", "image2_url", "image3_url",""],
   };
 
   const {
@@ -37,6 +38,30 @@ const AddProduct = () => {
   } = useForm({
     defaultValues: initialData,
   });
+
+
+  useEffect(() => {
+    const GetProduct = async () => {
+      try {
+        const response = await fetch(
+          `${import.meta.env.VITE_API_URL}/api/product/${productId}`,
+          {
+            method: "GET",
+          }
+        );
+        const userres = await response.json();
+        if (!userres.error) {
+          console.log(userres.singleProduct)
+          reset(userres.singleProduct)
+        }
+      } catch (error) {
+        console.log("some thing went wrong while featchin the data", error);
+      }
+    };
+    GetProduct();
+  }, [productId, reset]);
+
+
 
   //  COLOR APPEND / REMOVE
   const {
@@ -77,21 +102,32 @@ const AddProduct = () => {
     control,
     name: "images",
   });
+
+  // SUBMIT
   const onSubmit = async (data) => {
     try {
-      const response = await fetch(`${VITE_API_URL}/api/product`, {
-        method: "POST",
-        headers: {
-         "content-type": "application/json",
-        },
-        body: JSON.stringify(data)
-      });
-      const userres = await response.json();
-      if (!userres.error) {
-        alert("Product have been added")
-        console.log(userres)
-        reset()
-      }
+      console.log(data)
+      const url = productId
+      ? `${VITE_API_URL}/api/product/${productId}`
+      : `${VITE_API_URL}/api/product`;
+
+    const method = productId ? "PUT" : "POST";
+
+    const response = await fetch(url, {
+      method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    const result = await response.json();
+    if (!result.error) {
+      alert(`Product has been ${productId ? "updated" : "added"}`);
+      reset();
+    } else {
+      alert("Something went wrong");
+    }
     } catch (error) {
       console.log(error);
       console.log("some thing happend while fetching");
@@ -105,7 +141,7 @@ const AddProduct = () => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col justify-start gap-8 w-full  p-5"
     >
-      <h2 className="text-4xl mb-8 text-center">ADD PRODUCT</h2>
+      {productId?<h2 className="text-4xl mb-8 text-center">EDIT PRODUCT</h2>:<h2 className="text-4xl mb-8 text-center">ADD PRODUCT</h2>}
       {/* NAME */}
       <div>
         <label className="text-lg font-sans font-semibold">Name : </label>
@@ -120,6 +156,22 @@ const AddProduct = () => {
           ""
         )}
       </div>
+
+
+      <div>
+        <label className="text-lg font-sans font-semibold">brand : </label>
+        <input
+          className="input input-sm outline outline-1 outline-slate-500 border  mx-2"
+          type="text"
+          {...register("brand", { required: "BRAND name is required" })}
+        />
+        {errors.name ? (
+          <p className="text-red-500 text-xs">{errors.brand.message}</p>
+        ) : (
+          ""
+        )}
+      </div>
+      
 
       {/* DESCRIPTEION */}
       <div className="flex flex-col gap-5 md:flex-row">

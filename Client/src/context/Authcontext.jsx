@@ -1,7 +1,11 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
-const AuthContext = createContext();
+
 import { useLocation, useNavigate } from "react-router-dom";
+
+// Create Context
+const AuthContext = createContext();
+
 
 export const Authcontextprovider = ({ children }) => {
   const [user, setUser] = useState(null);

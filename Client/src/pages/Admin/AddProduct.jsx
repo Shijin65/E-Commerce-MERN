@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useForm, useFieldArray, Controller } from "react-hook-form";
+import { useLocation, useNavigate } from "react-router-dom";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const AddProduct = ({productId}) => {
+  const Navigate = useNavigate()
+  const location = useLocation()
   const initialData = {
     name: "iphone",
     brand:"apple",
@@ -53,6 +56,7 @@ const AddProduct = ({productId}) => {
         if (!userres.error) {
           console.log(userres.singleProduct)
           reset(userres.singleProduct)
+
         }
       } catch (error) {
         console.log("some thing went wrong while featchin the data", error);
@@ -108,7 +112,7 @@ const AddProduct = ({productId}) => {
     try {
       console.log(data)
       const url = productId
-      ? `${VITE_API_URL}/api/product/${productId}`
+      ? `${VITE_API_URL}/api/admin/${productId}`
       : `${VITE_API_URL}/api/product`;
 
     const method = productId ? "PUT" : "POST";
@@ -125,6 +129,8 @@ const AddProduct = ({productId}) => {
     if (!result.error) {
       alert(`Product has been ${productId ? "updated" : "added"}`);
       reset();
+      const from = location.state?.from?.pathname || '/';
+      Navigate(from, { replace: true });
     } else {
       alert("Something went wrong");
     }

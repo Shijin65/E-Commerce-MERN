@@ -35,26 +35,10 @@ const GetProductById = asyncHandler(async (req, res) => {
   }
 });
 
-const updateProduct = asyncHandler(async (req, res) => {
-  try {
-    const productId = req.params.productId;
-    console.log(productId)
-    const  data  = req.body
-    // console.log(data);
-    const updatedProduct = await Product.findByIdAndUpdate(productId, data, {
-      new: true,
-      runValidators: true,
-    });
-    if (updatedProduct) {
-      res.status(200).json({ updatedProduct });
-    }
-  } catch (error) {
-    console.log(error);
-  }
-});
+
 module.exports = {
   createProduct,
   userGetAllProduct,
   GetProductById,
-  updateProduct,
+ 
 };

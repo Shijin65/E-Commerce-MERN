@@ -4,7 +4,6 @@ const { createProduct ,userGetAllProduct, GetProductById ,updateProduct} = requi
 const router = express.Router();
 
 router.post("/", createProduct);
-router.put("/:productId", updateProduct)
 router.get("/",userGetAllProduct)
 router.get("/:productId",GetProductById)
 module.exports = router;

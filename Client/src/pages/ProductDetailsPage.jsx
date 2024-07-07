@@ -1,31 +1,32 @@
 import React, { useContext, useEffect, useState } from "react";
-import productImage from "../assets/productImage.png";
 import { FaCheck } from "react-icons/fa";
 import { useLocation, useParams } from "react-router-dom";
 import { GoDotFill } from "react-icons/go";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/Authcontext";
-
+import { useCart } from "../context/CartContext";
 const ProductDetailsPage = () => {
   const { productId } = useParams();
   const navigate = useNavigate();
   const [Product, setProduct] = useState();
-  const user = useContext(AuthContext)
-  const location= useLocation()
-
+  const user = useContext(AuthContext);
+  const { addToCart } = useCart();
+  const location = useLocation();
+  const [imageindex, setimageindex] = useState(1);
 
   const [Productspec, setProductspec] = useState({
-    count: 1,
+    name: "",
+    quantity: 1,
     color: "",
     storage: "",
     price: "",
+    image:"",
     _id: productId,
   });
 
-  console.log(Productspec)
- 
+  // console.log(Productspec);
+
   useEffect(() => {
-     
     const GetSingleProductId = async () => {
       try {
         const response = await fetch(
@@ -37,9 +38,12 @@ const ProductDetailsPage = () => {
         const userres = await response.json();
         if (!userres.error) {
           setProduct(userres.singleProduct);
+          // console.log()
           setProductspec({
             ...Productspec,
             price: userres.singleProduct.price?.newPrice,
+            name: userres.singleProduct.name,
+            image:userres.singleProduct.images[0]
           });
         }
       } catch (error) {
@@ -50,26 +54,26 @@ const ProductDetailsPage = () => {
   }, [productId]);
 
   const handleAddToCart = () => {
-
-    
     if (user.user) {
-      navigate("/cart",{replace:true})
-    }else{
+      const cartItem = {
+        ...Productspec,
+      };
+      console.log(cartItem)
+      addToCart(cartItem); 
+      
+      
+      navigate("/cart", { replace: true });
+    } else {
       localStorage.setItem(`cartItem`, JSON.stringify(Productspec));
-      navigate('/login', {state: { from: location } })
+      navigate("/login", { state: { from: location } });
       alert("Product drafted");
     }
-    // navigate({
-    //   pathname: `/cart`,
-    // });
   };
-
 
   const handleColorChange = (event) => {
     const { name, value } = event.target;
     setProductspec({ ...Productspec, [name]: value });
   };
-
 
   const handleStorageChange = (event, price) => {
     const { name, value } = event.target;
@@ -77,38 +81,43 @@ const ProductDetailsPage = () => {
     setProductspec({ ...Productspec, [name]: value, price: price });
   };
 
-      const cartItem= localStorage.getItem('cartItem')
-      
-        console.log(JSON.parse(cartItem))
-      // setProductspec(JSON.parse(cartItem))
-      
+  const cartItem = localStorage.getItem("cartItem");
+
+ 
   return (
     <div>
       <div className="grid grid-cols-1 gap-10 md:grid-cols-2  w-full h-full  p-10">
         {/* <!-- Image gallery --> */}
         <div className="flex flex-col justify-center items-center w-full gap-16">
-          <img className="w-1/3 " src={Product?.images[0]} alt="device image" />
+          <img
+            className="w-1/3 "
+            src={Product?.images[imageindex]}
+            alt="device image"
+          />
           {/* small images */}
           <div className="flex gap-16 ">
             <div>
               <img
-                className="w-16"
+                className="w-16 cursor-pointer"
                 src={Product?.images[1]}
-                alt="device image"
+                alt="device image "
+                onClick={() => setimageindex(1)}
               />
             </div>
             <div>
               <img
-                className="w-16"
+                className="w-16 cursor-pointer"
                 src={Product?.images[2]}
                 alt="device image"
+                onClick={() => setimageindex(2)}
               />
             </div>
             <div>
               <img
-                className="w-16"
+                className="w-16 cursor-pointer"
                 src={Product?.images[3]}
                 alt="device image"
+                onClick={() => setimageindex(3)}
               />
             </div>
           </div>
@@ -195,7 +204,7 @@ const ProductDetailsPage = () => {
                   className="flex items-center cursor-pointer outline outline-2  outline-slate-400"
                 >
                   <input
-                    defaultChecked={index === 0 ? true : false}
+                    // defaultChecked={index === 0 ? true : false}
                     type="radio"
                     name="storage"
                     value={space.storage}
@@ -216,7 +225,7 @@ const ProductDetailsPage = () => {
                 </label>
               ))}
             </div>
-            {/* SELECT COUNT */}
+            {/* SELECT quantity */}
             <div className="flex justify-start mt-10 py-6 items-center gap-10 border-y-2 select-none">
               <div className="flex  text-xl">
                 <div
@@ -224,19 +233,19 @@ const ProductDetailsPage = () => {
                   onClick={() =>
                     setProductspec({
                       ...Productspec,
-                      count: Productspec.count > 1 ? Productspec.count - 1 : 1,
+                      quantity: Productspec.quantity > 1 ? Productspec.quantity - 1 : 1,
                     })
                   }
                 >
                   -
                 </div>
-                <div className="border-y-2 p-3">{Productspec.count}</div>
+                <div className="border-y-2 p-3">{Productspec.quantity}</div>
                 <div
                   className="border-2 p-3 cursor-pointer"
                   onClick={() => {
                     setProductspec({
                       ...Productspec,
-                      count: Productspec.count + 1,
+                      quantity: Productspec.quantity + 1,
                     });
                   }}
                 >
@@ -244,7 +253,7 @@ const ProductDetailsPage = () => {
                 </div>
               </div>
               {/* ADD TO CART BUTTON */}
-              <button
+              <button type="button"
                 onClick={handleAddToCart}
                 className="btn bg-black hover:bg-black rounded-none text-white"
               >
@@ -276,7 +285,7 @@ const ProductDetailsPage = () => {
           />
 
           <div role="tabpanel" className="tab-content p-10 w-full ">
-            {Product?.features.map((item,index) => (
+            {Product?.features.map((item, index) => (
               <h1 key={index} className="flex gap-5 p-1">
                 {" "}
                 <GoDotFill />

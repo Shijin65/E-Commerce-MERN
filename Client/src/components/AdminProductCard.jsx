@@ -1,10 +1,10 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 
 const AdminProductCard = ({ product , rerender}) => {
-
+const location = useLocation()
   const handledelete = async () => {
     const response = await fetch(
       `${VITE_API_URL}/api/admin/product/${product._id}`,
@@ -34,12 +34,12 @@ const AdminProductCard = ({ product , rerender}) => {
         </figure>
         <div className="card-body">
           <h2 className="card-title text-lg">{product.name}</h2>
-          <p>Click the button to watch on Jetflix app.</p>
+          <p>{product.description}</p>
           <div className="card-actions justify-end">
             <button onClick={handledelete} className="btn btn-error btn-sm">
               delete
             </button>
-            <NavLink to={`/admin/edit-product/${product._id}`} className="btn btn-primary btn-sm">Edit</NavLink>
+            <NavLink to={`/admin/edit-product/${product._id}`} state={{ from: location }} className="btn btn-primary btn-sm">Edit</NavLink>
           </div>
         </div>
       </div>

@@ -51,4 +51,21 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
-module.exports = { ShowAllUser, getAllProducts, deleteProduct, deleteUser,createProduct };
+const updateProduct = asyncHandler(async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    console.log(productId)
+    const  data  = req.body
+    // console.log(data);
+    const updatedProduct = await Product.findByIdAndUpdate(productId, data, {
+      new: true,
+      runValidators: true,
+    });
+    if (updatedProduct) {
+      res.status(200).json({ updatedProduct });
+    }
+  } catch (error) {
+    console.log(error);
+  }
+});
+module.exports = { ShowAllUser, getAllProducts, deleteProduct, deleteUser,createProduct ,updateProduct,updateProduct};

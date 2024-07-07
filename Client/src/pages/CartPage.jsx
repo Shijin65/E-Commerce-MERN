@@ -6,22 +6,32 @@ import { useCart } from "../context/CartContext";
 const CartPage = () => {
   const [count, setcount] = useState(1);
   const Navigate = useNavigate();
-  const user = useContext(AuthContext);
+  const { user } = useContext(AuthContext);
   const location = useLocation();
   const { cartItems, editCartItem } = useCart();
 
   const calculateTotalPrice = () => {
     return cartItems.reduce((total, item) => total + item.subtotal, 0);
   };
-  // console.log(cartItems);
-
-  // setcount(cartItems.count)
-  // const cartItem=localStorage.getItem(cartItem)
-  const handleCart = () => {
-    if (user.user) {
+  const handleCheckOut = async () => {
+    const orderData = {
+      userId: user._id,
+      products: cartItems,
+      totalAmount: calculateTotalPrice(),
+    };
+    console.log(orderData);
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/api/order`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(orderData),
+    });
+    const orderres =await response.json()
+    if (!orderres.error) {
       Navigate("/ordersuccess", { replace: true });
     } else {
-      Navigate("/login", { state: { from: location } });
+      alert("something went wrong")
     }
   };
   return (
@@ -46,11 +56,7 @@ const CartPage = () => {
                     <td className="py-8 flex justify-evenly items-center ">
                       <div className="w-20 h-20 ">
                         {/* Placeholder for product image */}
-                        <img
-                          src={item.image}
-                          alt="Product"
-                          className="h-16"
-                        />
+                        <img src={item.image} alt="Product" className="h-16" />
                       </div>
                       <span className="text-center">{item.name}</span>
                     </td>
@@ -84,7 +90,9 @@ const CartPage = () => {
                         </button>
                       </div>
                     </td>
-                    <td className="py-8 text-center">INR {item.price*item.quantity}.00</td>
+                    <td className="py-8 text-center">
+                      INR {item.price * item.quantity}.00
+                    </td>
                   </tr>
                 ))}
 
@@ -123,12 +131,14 @@ const CartPage = () => {
             <div className=" border-gray-300 py-10">
               <div className="flex justify-between">
                 <span>Total</span>
-                <span className="font-bold text-lg">INR {calculateTotalPrice()}.00</span>
+                <span className="font-bold text-lg">
+                  INR {calculateTotalPrice()}.00
+                </span>
               </div>
             </div>
             <button
               className="w-full bg-cyan-500 text-white p-4 mt-4 rounded"
-              onClick={handleCart}
+              onClick={handleCheckOut}
             >
               PROCEED TO CHECKOUT
             </button>

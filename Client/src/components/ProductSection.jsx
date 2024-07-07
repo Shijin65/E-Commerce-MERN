@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./ProductCard";
+import { useNavigate } from "react-router-dom";
 
 const ProductSection = () => {
 
@@ -23,7 +24,10 @@ const ProductSection = () => {
         setProducts(userres.AllProducts)
     }
   }
+  const Navigate = useNavigate()
   return (
+    <>
+    
     <div className="lg: w-full   flex flex-col items-center">
       <div>
         <span className="font-bold text-3xl  text-start w-full hidden md:block">Product</span>
@@ -41,6 +45,8 @@ const ProductSection = () => {
         </div>
       </div>
     </div>
+    <h1 onClick={()=>Navigate("/products",{replace:true})} className="text-end w-[90vw] text-blue-400 font-semibold text-sm">View All ----</h1>
+    </>
   );
 };
 

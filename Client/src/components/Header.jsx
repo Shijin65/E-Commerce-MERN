@@ -20,7 +20,7 @@ export default function Header() {
           <FaUserAlt size={15} />
         </Link>
 
-        <Link to="/admin">
+        <Link to="/orders">
           <FaShoppingBag size={15} />
         </Link>
         {user && (

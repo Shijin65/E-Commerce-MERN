@@ -21,7 +21,7 @@ const ProductDetailsPage = () => {
     storage: "",
     price: "",
     image:"",
-    _id: productId,
+    productId,
   });
 
   // console.log(Productspec);
@@ -294,6 +294,7 @@ const ProductDetailsPage = () => {
             ))}
           </div>
         </div>
+        
       </div>
     </div>
   );

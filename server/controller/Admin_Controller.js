@@ -1,6 +1,7 @@
 const asyncHandler = require("express-async-handler");
 const User = require("../model/User_model");
 const Product = require("../model/Product_model");
+const Order = require("../model/Order_model");
 const ShowAllUser = asyncHandler(async (req, res) => {
   try {
     const Allusers = await User.find();
@@ -68,4 +69,14 @@ const updateProduct = asyncHandler(async (req, res) => {
     console.log(error);
   }
 });
-module.exports = { ShowAllUser, getAllProducts, deleteProduct, deleteUser,createProduct ,updateProduct,updateProduct};
+
+const getAllOrders = asyncHandler(async(req,res)=>{
+    try {
+      const AllOrders = await Order.find();
+    res.status(200).json({ AllOrders });
+    } catch (error) {
+      res.status(500).json({ message: 'Error retrieving orders', error });
+      console.log(error)
+    }
+})
+module.exports = { ShowAllUser, getAllProducts, deleteProduct, deleteUser,createProduct ,updateProduct,updateProduct,getAllOrders};

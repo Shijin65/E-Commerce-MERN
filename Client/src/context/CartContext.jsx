@@ -13,12 +13,14 @@ export const CartProvider = ({ children }) => {
   console.log(cartItems)
 
   const addToCart = (item) => {
+    
     const existingItemIndex = cartItems.findIndex((cartItem) => cartItem.id === item.id);
-  
-    if (existingItemIndex >= 0) {
+    console.log(existingItemIndex)
+    if (existingItemIndex > 0) {
       console.log('Item already exists in cart, updating quantity');
       const updatedCartItems = [...cartItems];
-      updatedCartItems[existingItemIndex].count += item.count;
+      console.log(updatedCartItems)
+      updatedCartItems[existingItemIndex].quantity += item.quantity;      
       updatedCartItems[existingItemIndex].subtotal = updatedCartItems[existingItemIndex].quantity * updatedCartItems[existingItemIndex].price;
 
       setCartItems(updatedCartItems); // Update the state with updated items

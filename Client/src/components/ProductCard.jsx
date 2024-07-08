@@ -11,23 +11,23 @@ const ProductCard = ({ bigOne, item ,product}) => {
         navigate(`/productdetails/${product?._id}`,{replace:true})
       }
       className={` bg-base-100   border-2 hover:bg-gray-200 ${
-        bigOne ? "h-full w-full p-10" : "md:w- p-1 md:p-4 "
+        bigOne ? "h-full w-full p-16 " : " md:p-4 md:w-[300px] md:h-[375px] w-[196px] h-[281px] p-2"
       }`}
     >
-      <h1 className="text-[10px] font-medium  flex justify-center bg-green-700 text-white w-10">
+      {bigOne ||<h1 className="text-[10px] font-medium  flex justify-center bg-green-700 text-white w-10 ">
         HOT
-      </h1>
-      <figure className={`px-10 flex justify-center `}>
-        <img src={product?.images[1]} alt="phone" className={`${bigOne ? "h-64" : "h-40"}`} />
+      </h1>}
+      <figure className={`flex justify-center mt-6`}>
+        <img src={product?.images[1]} alt="phone" className={`${bigOne ? "w-[224.53px] h-[300px]" : "md:w-[130.58px] md:h-[182.85px] w-[83px] h-[113px]"}`} />
       </figure>
       <div
         className={`flex flex-col  w-full   ${
-          bigOne ? " gap-5  " : "justify-start"
+          bigOne ? "gap-8  justify-center " : "justify-start"
         }`}
       >
         <div className="flex justify-between w-full mt-3">
           {bigOne ? (
-            <h1 className="text-center font-semibold font-mono text-[10px] text-sky-500  items-end   w-full">
+            <h1 className="text-center font-bold font-mono text-[16px]  text-sky-500  items-end   w-full">
               {product?.features[0].feature} : {product?.features[0].value}
             </h1>
           ) : (
@@ -44,10 +44,11 @@ const ProductCard = ({ bigOne, item ,product}) => {
 
         <h2
           className={`card-title  font-bold ${
-            bigOne ? "text-center" : "text-xs"
+            bigOne ? " text-[20px] flex justify-center w-full text-center" : "text-[14px] mt-3"
           }`}
         >
-           {product?.name}  - {product?.colors[1]}
+           {product?.name}  
+           <div className="hidden md:block">  - {product?.colors[1]}</div>
         </h2>
 
         <div
@@ -60,8 +61,8 @@ const ProductCard = ({ bigOne, item ,product}) => {
           <h2 className="line">{product?.price.newPrice}</h2>
         </div>
         {bigOne ? (
-          <div className="flex justify-center">
-            <button className="btn w-44 bg-sky-600 text-white rounded-none mt-10 ">
+          <div className="flex justify-center items-end">
+            <button className="btn  bg-sky-600 text-white rounded-none font-semibold mt-10 py-[9px] px-[58px] text-[14px]">
             ADD TO CART
           </button>
           </div>

@@ -5,8 +5,8 @@ const OrderSuccessPage = () => {
     const navigate = useNavigate()
   useEffect(() => {
     setTimeout(() => {
-        navigate({pathname:"/cart"})
-    }, 10000);
+        navigate({pathname:"/orders"})
+    }, 5000);
   }, []);
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">

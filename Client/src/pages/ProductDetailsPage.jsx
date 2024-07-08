@@ -255,7 +255,7 @@ const ProductDetailsPage = () => {
               {/* ADD TO CART BUTTON */}
               <button type="button"
                 onClick={handleAddToCart}
-                className="btn bg-black hover:bg-black rounded-none text-white"
+                className={`btn bg-black hover:bg-black rounded-none text-white ${Productspec.color===""||Productspec.storage=="" ? "btn-disabled":""}`}
               >
                 ADD TO CART
               </button>

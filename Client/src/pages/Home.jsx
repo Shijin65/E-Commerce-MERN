@@ -1,15 +1,14 @@
-import React from 'react'
-import ProductSection from '../components/ProductSection'
-import TopBrand from '../components/TopBrand'
+import React from "react";
+import ProductSection from "../components/ProductSection";
+import TopBrand from "../components/TopBrand";
 
 const Home = () => {
   return (
-    <div className='flex flex-col gap-10 p-4'>
-        <ProductSection/>
-        
-        <TopBrand/>
+    <div className="md:flex md:flex-col gap-10 ">
+      <ProductSection />
+      <TopBrand />
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

@@ -40,13 +40,7 @@ const OrderStatusPage = () => {
             <h1>{product.price}</h1>
             <h1>{product.quantity}</h1>
             <h1>{product.subtotal}</h1>
-            </div>
-            
-
-
-
-            
-            
+            </div>    
             </div>))}
             </div>
             <div className="mt-4">Total Amount  :  {order.totalAmount}</div>

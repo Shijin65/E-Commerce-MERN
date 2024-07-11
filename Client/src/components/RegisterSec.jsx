@@ -27,6 +27,8 @@ const RegisterSec = () => {
       action=""
       className="logincontainer flex flex-col gap-2 w-full items-center "
     >
+
+      {/* NAME */}
       <input
         name="username"
         type="text"
@@ -35,6 +37,7 @@ const RegisterSec = () => {
         value={userData.username}
         onChange={onchangeHandler}
       />
+      {/* EMAIL */}
       <input
         name="email"
         type="email"
@@ -43,6 +46,8 @@ const RegisterSec = () => {
         value={userData.email}
         onChange={onchangeHandler}
       />
+
+      {/* PASSWORD */}
       <input
         name="password"
         value={userData.password}

@@ -34,9 +34,12 @@ const ProductSection = () => {
         <span className="font-bold text-lg  text-start w-full  md:hidden">Recommended for you</span>
 
         <div className="grid grid-cols-2 lg:grid-cols-3 mt-6 ">
+          {/* BIG CARD */}
           <div className="row-span-2 col-span-1  hidden lg:block relative">
             <ProductCard product={products[0]} bigOne />
           </div>
+          
+          {/* NORMAL CARDS */}
           <div className="grid grid-cols-2  col-span-4 lg:grid-cols-3  lg:col-span-2 ">
             {products.slice(1,7).map((product,index) => (
                <ProductCard key={index}  product={product}/>

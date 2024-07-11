@@ -36,7 +36,7 @@ export const CartProvider = ({ children }) => {
   };
 
 
-
+  // EDIT CART
   const editCartItem = (itemIdToEdit, newQuantity) => {
     console.log(itemIdToEdit, newQuantity)
     const updatedCartItems = cartItems.map((item) => {
@@ -51,11 +51,12 @@ export const CartProvider = ({ children }) => {
   };
 
 
-
+//REMOVE PRODUCT FROM CART
   const removeFromCart = (id) => {
     setCartItems((prevItems) => prevItems.filter((item) => item._id !== id)); //Remove the item from the cart
   };
 
+  //CLEAR THE CART
   const clearCart = () => {
     setCartItems([]);
   };

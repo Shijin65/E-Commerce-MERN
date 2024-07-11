@@ -6,7 +6,10 @@ const LoginSec = () => {
     email:"",
     password:""
   })
+
   const {LoginUser}=useContext(AuthContext)
+
+
   const handleSubmit=(event)=>{
     event.preventDefault()
     console.log(import.meta.env.VITE_API_URL)
@@ -22,6 +25,7 @@ const LoginSec = () => {
       action=""
       className="logincontainer flex flex-col gap-2 w-full items-center "
     >
+      {/* EMAIL */}
       <input
       name="email"
       value={userData.email}
@@ -30,6 +34,8 @@ const LoginSec = () => {
         className="border-2 p-4 w-full  input-bordered  max-w-lg rounded-sm"
         onChange={handlechange}
       />
+
+      {/* PASSWORD */}
       <input
       name="password"
       value={userData.password}

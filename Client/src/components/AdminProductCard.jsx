@@ -5,6 +5,8 @@ const VITE_API_URL = import.meta.env.VITE_API_URL;
 
 const AdminProductCard = ({ product , rerender}) => {
 const location = useLocation()
+
+// HANDLE DELETE
   const handledelete = async () => {
     const response = await fetch(
       `${VITE_API_URL}/api/admin/product/${product._id}`,
@@ -21,7 +23,7 @@ const location = useLocation()
       console.error("Failed to delete product", data);
     }
   };
-  console.log(product);
+  
   return (
     <div>
       <div className="card card-side bg-base-100 shadow-xl max-w-md max-h-44">

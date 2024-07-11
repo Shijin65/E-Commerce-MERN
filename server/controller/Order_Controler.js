@@ -1,6 +1,7 @@
 const AsyncHandler = require("express-async-handler");
 const Order = require("../model/Order_model");
 
+// CREATE ORDER
 const createOrdersession =AsyncHandler(async(req,res)=>{
     const { userId , products,totalAmount } = req.body;
     console.log(userId)
@@ -20,6 +21,7 @@ const createOrdersession =AsyncHandler(async(req,res)=>{
     }
 })
 
+// GET ORDER BY ID
 const getOrders = AsyncHandler(async(req,res)=>{
     try {
         const orders = await Order.find({ userId: req.user.id });

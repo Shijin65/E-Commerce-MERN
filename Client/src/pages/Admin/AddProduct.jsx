@@ -3,12 +3,12 @@ import { useForm, useFieldArray, Controller } from "react-hook-form";
 import { useLocation, useNavigate } from "react-router-dom";
 const VITE_API_URL = import.meta.env.VITE_API_URL;
 
-const AddProduct = ({productId}) => {
-  const Navigate = useNavigate()
-  const location = useLocation()
+const AddProduct = ({ productId }) => {
+  const Navigate = useNavigate();
+  const location = useLocation();
   const initialData = {
     name: "iphone",
-    brand:"apple",
+    brand: "apple",
     colors: ["Black", "White", "Blue"],
     price: {
       currency: "USD",
@@ -29,7 +29,7 @@ const AddProduct = ({productId}) => {
       { feature: "Sports Modes", value: "00" },
       ,
     ],
-    images: ["image1_url", "image2_url", "image3_url",""],
+    images: ["image1_url", "image2_url", "image3_url", ""],
   };
 
   const {
@@ -42,7 +42,6 @@ const AddProduct = ({productId}) => {
     defaultValues: initialData,
   });
 
-
   useEffect(() => {
     const GetProduct = async () => {
       try {
@@ -54,9 +53,8 @@ const AddProduct = ({productId}) => {
         );
         const userres = await response.json();
         if (!userres.error) {
-          console.log(userres.singleProduct)
-          reset(userres.singleProduct)
-
+          console.log(userres.singleProduct);
+          reset(userres.singleProduct);
         }
       } catch (error) {
         console.log("some thing went wrong while featchin the data", error);
@@ -64,8 +62,6 @@ const AddProduct = ({productId}) => {
     };
     GetProduct();
   }, [productId, reset]);
-
-
 
   //  COLOR APPEND / REMOVE
   const {
@@ -110,34 +106,33 @@ const AddProduct = ({productId}) => {
   // SUBMIT
   const onSubmit = async (data) => {
     try {
-      console.log(data)
+      console.log(data);
       const url = productId
-      ? `${VITE_API_URL}/api/admin/${productId}`
-      : `${VITE_API_URL}/api/product`;
+        ? `${VITE_API_URL}/api/admin/${productId}`
+        : `${VITE_API_URL}/api/product`;
 
-    const method = productId ? "PUT" : "POST";
+      const method = productId ? "PUT" : "POST";
 
-    const response = await fetch(url, {
-      method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
-    });
+      const response = await fetch(url, {
+        method,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
 
-    const result = await response.json();
-    if (!result.error) {
-      alert(`Product has been ${productId ? "updated" : "added"}`);
-      reset();
-      const from = location.state?.from?.pathname || '/';
-      Navigate(from, { replace: true });
-    } else {
-      alert("Something went wrong");
-    }
+      const result = await response.json();
+      if (!result.error) {
+        alert(`Product has been ${productId ? "updated" : "added"}`);
+        reset();
+        const from = location.state?.from?.pathname || "/";
+        Navigate(from, { replace: true });
+      } else {
+        alert("Something went wrong");
+      }
     } catch (error) {
       console.log(error);
       console.log("some thing happend while fetching");
-
     }
     console.log(data);
   };
@@ -147,7 +142,11 @@ const AddProduct = ({productId}) => {
       onSubmit={handleSubmit(onSubmit)}
       className="flex flex-col justify-start gap-8 w-full  p-5"
     >
-      {productId?<h2 className="text-4xl mb-8 text-center">EDIT PRODUCT</h2>:<h2 className="text-4xl mb-8 text-center">ADD PRODUCT</h2>}
+      {productId ? (
+        <h2 className="text-4xl mb-8 text-center">EDIT PRODUCT</h2>
+      ) : (
+        <h2 className="text-4xl mb-8 text-center">ADD PRODUCT</h2>
+      )}
       {/* NAME */}
       <div>
         <label className="text-lg font-sans font-semibold">Name : </label>
@@ -163,7 +162,6 @@ const AddProduct = ({productId}) => {
         )}
       </div>
 
-
       <div>
         <label className="text-lg font-sans font-semibold">brand : </label>
         <input
@@ -177,7 +175,6 @@ const AddProduct = ({productId}) => {
           ""
         )}
       </div>
-      
 
       {/* DESCRIPTEION */}
       <div className="flex flex-col gap-5 md:flex-row">
@@ -202,21 +199,22 @@ const AddProduct = ({productId}) => {
             <div key={field.id} className="flex">
               <div>
                 <Controller
-                name={`colors.${index}`}
-                control={control}
-                rules={{ required: "color is required" }}
-                render={({ field }) => (
-                  <input
-                    className="input input-sm outline outline-1 outline-slate-500 border  "
-                    {...field}
-                  />
+                  name={`colors.${index}`}
+                  control={control}
+                  rules={{ required: "color is required" }}
+                  render={({ field }) => (
+                    <input
+                      className="input input-sm outline outline-1 outline-slate-500 border  "
+                      {...field}
+                    />
+                  )}
+                />
+                {errors.colors?.[index] && (
+                  <p className="text-red-500 text-xs">
+                    {errors.colors[index].message}
+                  </p>
                 )}
-              />
-              {errors.colors?.[index] && (
-                <p className="text-red-500 text-xs">{errors.colors[index].message}</p>
-              )}
               </div>
-              
 
               <button
                 type="button"
@@ -237,6 +235,7 @@ const AddProduct = ({productId}) => {
         </div>
       </div>
 
+      {/* OLD PRICE */}
       <div>
         <label className="text-lg font-sans font-semibold">Old Price:</label>
         <input
@@ -245,10 +244,13 @@ const AddProduct = ({productId}) => {
           {...register("price.oldPrice", { required: "Old price is required" })}
         />
         {errors.price?.oldPrice && (
-          <p className="text-red-500 text-xs">{errors.price.oldPrice.message}</p>
+          <p className="text-red-500 text-xs">
+            {errors.price.oldPrice.message}
+          </p>
         )}
       </div>
-
+      
+      {/* NEW PRICE */}
       <div>
         <label className="text-lg font-sans font-semibold">New Price:</label>
         <input
@@ -257,7 +259,9 @@ const AddProduct = ({productId}) => {
           {...register("price.newPrice", { required: "New price is needed" })}
         />
         {errors.price?.newPrice && (
-          <p className="text-red-500 text-xs">{errors.price.newPrice.message}</p>
+          <p className="text-red-500 text-xs">
+            {errors.price.newPrice.message}
+          </p>
         )}
       </div>
 
@@ -270,38 +274,42 @@ const AddProduct = ({productId}) => {
           {storageFields.map((field, index) => (
             <div key={field.id} className="flex gap-3">
               <div className="flex flex-col">
-              <Controller
-                name={`storageOptions.${index}.storage`}
-                control={control}
-                rules={{ required: "Storage option is required" }}
-                render={({ field }) => (
-                  <input
-                    className="input input-sm outline outline-1 outline-slate-500 border"
-                    {...field}
-                  />
+                <Controller
+                  name={`storageOptions.${index}.storage`}
+                  control={control}
+                  rules={{ required: "Storage option is required" }}
+                  render={({ field }) => (
+                    <input
+                      className="input input-sm outline outline-1 outline-slate-500 border"
+                      {...field}
+                    />
+                  )}
+                />
+                {errors.storageOptions?.[index]?.storage && (
+                  <p className="text-red-500 text-xs">
+                    {errors.storageOptions[index].storage.message}
+                  </p>
                 )}
-              />
-              {errors.storageOptions?.[index]?.storage && (
-                <p className="text-red-500 text-xs">{errors.storageOptions[index].storage.message}</p>
-              )}
               </div>
               <div className="flex flex-col">
-              <Controller
-                name={`storageOptions.${index}.price`}
-                control={control}
-                rules={{ required: "price is required" }}
-                render={({ field }) => (
-                  <input
-                    className="input input-sm outline outline-1 outline-slate-500 border"
-                    {...field}
-                  />
+                <Controller
+                  name={`storageOptions.${index}.price`}
+                  control={control}
+                  rules={{ required: "price is required" }}
+                  render={({ field }) => (
+                    <input
+                      className="input input-sm outline outline-1 outline-slate-500 border"
+                      {...field}
+                    />
+                  )}
+                />
+                {errors.storageOptions?.[index]?.price && (
+                  <p className="text-red-500 text-xs">
+                    {errors.storageOptions[index].price.message}
+                  </p>
                 )}
-              />
-              {errors.storageOptions?.[index]?.price && (
-                <p className="text-red-500 text-xs">{errors.storageOptions[index].price.message}</p>
-              )}
               </div>
-              
+
               <button
                 type="button"
                 className="btn btn-sm btn-error"
@@ -342,25 +350,30 @@ const AddProduct = ({productId}) => {
                   )}
                 />
                 {errors.features?.[index]?.feature && (
-                  <p className="text-red-500 text-xs">{errors.features[index].feature.message}</p>
+                  <p className="text-red-500 text-xs">
+                    {errors.features[index].feature.message}
+                  </p>
                 )}
               </div>
-                {/* VALUE */}
+              {/* VALUE */}
               <div className="flex flex-col mx-2">
-              <Controller
-                name={`features.${index}.value`}
-                control={control}
-                rules={{ required: "Image URL is required" }}
-                render={({ field }) => (
-                  <input
-                    className="input input-sm outline outline-1 outline-slate-500 border "
-                    {...field}
-                  />
+                <Controller
+                  name={`features.${index}.value`}
+                  control={control}
+                  rules={{ required: "Image URL is required" }}
+                  render={({ field }) => (
+                    <input
+                      className="input input-sm outline outline-1 outline-slate-500 border "
+                      {...field}
+                    />
+                  )}
+                />
+                {errors.features?.[index]?.value && (
+                  <p className="text-red-500 text-xs">
+                    {errors.features[index].value.message}
+                  </p>
                 )}
-              />
-              {errors.features?.[index]?.value && (
-                <p className="text-red-500 text-xs">{errors.features[index].value.message}</p>
-              )}</div>
+              </div>
               <button
                 type="button"
                 className="btn btn-sm"
@@ -388,20 +401,23 @@ const AddProduct = ({productId}) => {
           {imageFields.map((field, index) => (
             <div key={field.id} className="flex">
               <div className="mx-2">
-              <Controller
-                name={`images.${index}`}
-                control={control}
-                rules={{ required: "Image URL is required" }}
-                render={({ field }) => (
-                  <input
-                    className="input input-sm outline outline-1 outline-slate-500 border  "
-                    {...field}
-                  />
+                <Controller
+                  name={`images.${index}`}
+                  control={control}
+                  rules={{ required: "Image URL is required" }}
+                  render={({ field }) => (
+                    <input
+                      className="input input-sm outline outline-1 outline-slate-500 border  "
+                      {...field}
+                    />
+                  )}
+                />
+                {errors.images?.[index] && (
+                  <p className="text-red-500 text-xs">
+                    {errors.images[index].message}
+                  </p>
                 )}
-              />
-              {errors.images?.[index] && (
-                <p className="text-red-500 text-xs">{errors.images[index].message}</p>
-              )}</div>
+              </div>
               <button
                 type="button"
                 className="btn btn-sm"

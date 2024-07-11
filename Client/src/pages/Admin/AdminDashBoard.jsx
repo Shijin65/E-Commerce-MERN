@@ -16,7 +16,9 @@ const AdminDashBoard = () => {
   return (
     <div className='md:px-16'>
       <div className='grid md:grid-cols-12  gap-5 content-center place-items-center '>
+        {/* OPTIONS  */}
         <div className='md:col-span-3'><AdminMenu /></div>
+        {/* RESULTS */}
         <div className='md:col-span-9 w-full h-[80vh]  overflow-scroll'><Outlet/></div>
       </div>
     </div>

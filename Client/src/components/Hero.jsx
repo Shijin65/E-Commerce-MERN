@@ -36,6 +36,7 @@ export default function Hero() {
 
   let carousel;
 
+  // BACK ARROW
   const renderPrevButton = ({ isDisabled }) => {
     return (
       <button
@@ -47,6 +48,7 @@ export default function Hero() {
     );
   };
 
+  // FORWARD ARROW
   const renderNextButton = ({ isDisabled }) => {
     return (
       <button
@@ -59,6 +61,8 @@ export default function Hero() {
     );
   };
   return (
+
+    //CAROUSEL
     <div className=" ">
       <AliceCarousel
       className="max-h-20"

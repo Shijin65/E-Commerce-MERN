@@ -36,6 +36,7 @@ const ShowAllProducts = () => {
     }
   };
   return (
+    
     <div className="grid lg:grid-cols-2 md:grid-cols-1 grid-cols-1 gap-4 p-2">
       {products.map((product, index) => (
         <AdminProductCard key={index} rerender={rerender} product={product} />

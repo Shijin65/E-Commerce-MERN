@@ -55,7 +55,7 @@ const CartPage = () => {
                   <tr className="">
                     <td className="py-8 flex justify-evenly items-center ">
                       <div className="w-20 h-20 ">
-                        {/* Placeholder for product image */}
+                        {/* PRODUCT IMAGE */}
                         <img src={item.image} alt="Product" className="h-16" />
                       </div>
                       <span className="text-center">{item.name}</span>
@@ -63,6 +63,8 @@ const CartPage = () => {
                     <td className="py-8  text-center">INR {item.price}.00</td>
                     <td className="py-8  ">
                       <div className="flex items-center  justify-center">
+
+                        {/* MINUS BUTTON */}
                         <button
                           className="px-2 py-1 bg-transparent border text-gray-700 rounded-l"
                           onClick={() =>
@@ -74,12 +76,15 @@ const CartPage = () => {
                         >
                           -
                         </button>
+                        {/* QUANTITY */}
                         <input
                           type="text"
                           value={item.quantity}
                           className=" py-1 w-12 text-center border-t border-b border-gray-300"
                           readOnly
                         />
+
+                        {/*PLUS BUTTON */}
                         <button
                           className="px-2 py-1 bg-transparent border text-gray-700 rounded-r"
                           onClick={() =>
@@ -120,6 +125,7 @@ const CartPage = () => {
               </div>
             </div>
           </div>
+          
           <div className="w-full md:w-1/3 bg-white p-6 shadow-lg my-14">
             <h2 className="text-2xl font-bold mb-4 ">Cart Totals</h2>
             <div className=" border-b border-gray-300 py-5">

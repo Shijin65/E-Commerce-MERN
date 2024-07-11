@@ -19,6 +19,7 @@ export default function Footer() {
         <img src={logo} alt="" />
       </div>
 
+      {/* SOCIAL MEDIA */}
       <div className="container mx-auto  flex  gap-3 flex-wrap-reverse justify-between ">
         <div className="  w-full md:w-auto mb-4 md:mb-0">
           <h3 className="text-sm font-Poppins font-bold text-black mb-5">
@@ -51,6 +52,8 @@ export default function Footer() {
             </a>
           </div>
         </div>
+
+        {/* TERMS */}
         <div className="w-full   md:w-auto mb-4 md:mb-0">
           <h3 className="text-sm font-Poppins font-bold text-black mb-5">
             IMPORTANT LINKS
@@ -67,7 +70,7 @@ export default function Footer() {
             </a>
           </div>
         </div>
-
+      {/* CONTACT */}
         <div className="w-full   md:w-auto mb-4 md:mb-0 ">
           <div className="flex items-start flex-col gap-2  justify-center ">
             <div className="bg-sky-500 p-2 rounded-full text-white  ">
@@ -81,7 +84,7 @@ export default function Footer() {
           </div>
         </div>
       </div>
-
+      {/* ENDING */}
       <div className="container mx-auto px-4 mt-8 border-t pt-4">
         <p className="text-center text-gray-600 flex justify-center gap-5 items-center">
           Arab Deals © 2023. All Rights Reserved <Link to="/admin" replace={true}><MdAdminPanelSettings /></Link>

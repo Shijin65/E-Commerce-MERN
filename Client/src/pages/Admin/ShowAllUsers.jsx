@@ -7,7 +7,6 @@ const ShowAllUsers = () => {
   const {user} = useContext(AuthContext)
   const id=user?.id
 
-  // const UsersData=[1,1,1,1,1,1]
   useEffect(() => {
     if (user) {
       getUsersData1()

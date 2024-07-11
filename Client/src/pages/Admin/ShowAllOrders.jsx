@@ -20,11 +20,13 @@ const ShowAllOrders = () => {
         console.error("Failed to fetch orders");
       }
     };
-    fetchorder();
+    fetchorder();//Fetching all orders
   }, [localStorage.getItem("auth")]);
 
   return (
     <div className="flex flex-col items-center w-full gap-5 px-2">
+
+      {/* ORDERS */}
       {orders.map((order) => (
         <div className="w-full bg-slate-300 rounded-md p-5">
           <div
@@ -44,7 +46,8 @@ const ShowAllOrders = () => {
                   ✕
                 </button>
               </form>
-
+              
+              {/* PRODUCTS */}
               <div>
                 Route Not set
               </div>

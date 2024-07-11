@@ -2,6 +2,8 @@ const asyncHandler = require("express-async-handler");
 const User = require("../model/User_model");
 const Product = require("../model/Product_model");
 const Order = require("../model/Order_model");
+
+// GET ALL USERS
 const ShowAllUser = asyncHandler(async (req, res) => {
   try {
     const Allusers = await User.find();
@@ -13,6 +15,7 @@ const ShowAllUser = asyncHandler(async (req, res) => {
   }
 });
 
+// ADD PRODUCT
 const createProduct = asyncHandler(async (req, res) => {
   const newProduct = new Product(req.body);
   await newProduct
@@ -22,6 +25,7 @@ const createProduct = asyncHandler(async (req, res) => {
   res.status(201).json(newProduct);
 });
 
+// GET ALL PRODUCTS
 const getAllProducts = asyncHandler(async (req, res) => {
   try {
     const AllProducts = await Product.find();
@@ -32,6 +36,7 @@ const getAllProducts = asyncHandler(async (req, res) => {
   }
 });
 
+// DELETE A PRODUCT
 const deleteProduct = asyncHandler(async (req, res) => {
   try {
     const productId = req.params.productId;
@@ -41,6 +46,8 @@ const deleteProduct = asyncHandler(async (req, res) => {
     console.log(error);
   }
 });
+
+// DELETE USER
 const deleteUser = asyncHandler(async (req, res) => {
   try {
     const userId = req.params.userId;
@@ -52,12 +59,12 @@ const deleteUser = asyncHandler(async (req, res) => {
   }
 });
 
+// UPDATE PRODUCT 
 const updateProduct = asyncHandler(async (req, res) => {
   try {
     const productId = req.params.productId;
     console.log(productId)
     const  data  = req.body
-    // console.log(data);
     const updatedProduct = await Product.findByIdAndUpdate(productId, data, {
       new: true,
       runValidators: true,
@@ -70,6 +77,7 @@ const updateProduct = asyncHandler(async (req, res) => {
   }
 });
 
+// GET ALL ORDERS
 const getAllOrders = asyncHandler(async(req,res)=>{
     try {
       const AllOrders = await Order.find();
